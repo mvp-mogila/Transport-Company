@@ -1,12 +1,12 @@
-<a href="{% url '/delivery/deliveries' %}" class="list-group-item">Доставки</a>
-<a href="{% url '/delivery/new-delivery' %}" class="list-group-item">Новая доставка</a>
+<a href="/delivery/deliveries" class="list-group-item">Доставки</a>
+<a href="/delivery/new-delivery" class="list-group-item">Новая доставка</a>
 {% if not logged %}
-    <a href="{% url '/auth/login' %}" class="list-group-item">Войти</a>
-    <a href="{% url '/auth/sign-up' %}" class="list-group-item">Создать аккаунт</a>
+    <a href="/auth/login" class="list-group-item">Войти</a>
+    <a href="/auth/sign-up" class="list-group-item">Создать аккаунт</a>
 {% else %}
     <a href="" class="list-group-item">Профиль</a>
     <a href="" class="list-group-item">Выйти</a>
 {% endif %}
 {% if return_page_url %}
-    <a href="{% url return_page_url %}" class="list-group-item">Назад</a>
+    <a href="" class="list-group-item">Назад</a>
 {% endif %}
