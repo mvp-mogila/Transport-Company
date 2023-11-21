@@ -4,31 +4,34 @@
 
 {% if all %}
     <h1>Доставки</h1>
+    {% include 'components/search.html' %}
     {% if deliveries %}
-        <table class="table">
+        <table class="table table-striped mt-3" style="background-color: azure;">
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Дата заказа</th>
+                <th scope="col">Дата отправки</th>
+                <th scope="col">Дата доставки</th>
                 <th scope="col">Адрес</th>
-                <th scope="col">Вес</th>
+                <th scope="col">Общий вес</th>
                 <th scope="col">Статус</th>
             </tr>
             </thead>
             <tbody>
                 {% for delivery in deliveries %}
                     <tr>
-                        <th scope="row">{{ delivery.id }}</th>
-                        <td>{{ delivery.create_date }}</td>
-                        <td>{{ delivery.address }}</td>
-                        <td>{{ delivery.weight }}</td>
-                        <td>{{ delivery.status }}</td>
+                        <th scope="row"><a href="delivery/{{ delivery.id }}" style="color: black; text-decoration: none;">{{ delivery.id }}</a></th>
+                        <td>{{ delivery.send_date }}</td>
+                        <td>{{ delivery.delivery_date }}</td>
+                        <td>{{ delivery.delivery_address }}</td>
+                        <td>{{ delivery.total_weight }}</td>
+                        <td>{{ delivery.delivery_status }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <h3 style="color: red;">Заказов нет</h3>
+        <h3 style="color: red;">По данному запросу доставок не найдено</h3>
     {% endif %}
 {% else %}
     <h1>Доставкa № {{ delivery.id }}</h1>
