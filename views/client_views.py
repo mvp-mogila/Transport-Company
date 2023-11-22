@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template
 
-import client_query.delivery_manager as query
+import managers.delivery_manager as query
 
 deliveries_app = Blueprint('deliveries_app', __name__, template_folder = "templates")
 

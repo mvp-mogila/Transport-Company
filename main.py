@@ -2,7 +2,7 @@
 
 from flask import Flask, render_template
 
-from client_query.client_deliveries import deliveries_app
+from views.client_views import deliveries_app
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.register_blueprint(deliveries_app, url_prefix='/delivery')
