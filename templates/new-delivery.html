@@ -1,0 +1,26 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+<h1>Новая доставка</h1>
+
+<form method="POST">
+    <div class="form-row">
+        <!-- <div class="col"> -->
+            <label>Адрес отправки</label>
+            <input type="text" class="form-control" name="send_addr" required>
+            <label>Адрес доставки</label>
+            <input type="text" class="form-control" name="deliv_addr" required>
+            <label>Дата отправки</label>
+            <input type="date" class="form-control" name="send_date" required placeholder="dd-mm-yyyy">
+            <label>Дата доставки</label>
+            <input type="date" class="form-control" name="deliv_date" required placeholder="dd-mm-yyyy">
+            <!-- <select class="form-control form-control-md" name="">
+                <option></option>
+            </select> -->
+        <!-- </div> -->
+        <button type="submit" class="btn btn-success mt-3">Создать заказ</button>
+    </div>
+</form>
+
+{% endblock %}
