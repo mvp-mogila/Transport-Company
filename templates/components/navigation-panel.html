@@ -1,5 +1,5 @@
-<a href="/delivery/deliveries" class="list-group-item">Доставки</a>
-<a href="/delivery/new-delivery" class="list-group-item">Новая доставка</a>
+<a href="/delivery/" class="list-group-item">Доставки</a>
+<a href="/delivery/new" class="list-group-item">Новая доставка</a>
 {% if not logged %}
     <a href="/auth/login" class="list-group-item">Войти</a>
     <a href="/auth/sign-up" class="list-group-item">Создать аккаунт</a>
@@ -8,5 +8,5 @@
     <a href="" class="list-group-item">Выйти</a>
 {% endif %}
 {% if return_page_url %}
-    <a href="" class="list-group-item">Назад</a>
+    <a href="{{ return_page_url }}" class="list-group-item">Назад</a>
 {% endif %}

@@ -1,10 +1,18 @@
 <div class="container">
     <div class="row">
         <div class="col-4">
-            <h2>Дата создания заказа</h2>
+            <h2>Отправитель</h2>
         </div>
         <div class="col-8">
-            <h3>{{ delivery.create_date }}</h3>
+            <h3>{{ client.surname }} {{ client.name }} {{ client.fatherhood }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <h2>Дата отправки</h2>
+        </div>
+        <div class="col-8">
+            <h3>{{ delivery.send_date }}</h3>
         </div>
     </div>
     <div class="row">
@@ -12,7 +20,7 @@
             <h2>Дата доставки</h2>
         </div>
         <div class="col-8">
-            <h3>{{ delivery.ready_date }}</h3>
+            <h3>{{ delivery.delivery_date }}</h3>
         </div>
     </div>
     <div class="row">
@@ -20,7 +28,7 @@
             <h2>Адрес отправки</h2>
         </div>
         <div class="col-8">
-            <h3>{{ delivery.address }}</h3>
+            <h3>{{ delivery.send_address }}</h3>
         </div>
     </div>
     <div class="row">
@@ -28,7 +36,31 @@
             <h2>Адрес доставки</h2>
         </div>
         <div class="col-8">
-            <h3>{{ delivery.date }}</h3>
+            <h3>{{ delivery.delivery_address }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <h2>Водитель</h2>
+        </div>
+        <div class="col-8">
+            <h3>{{ driver.surname }} {{ driver.name }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <h2>Транспорт</h2>
+        </div>
+        <div class="col-8">
+            <h3>{{ transport.model }} {{ transport.reg_number }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <h2>Экспедитор</h2>
+        </div>
+        <div class="col-8">
+            <h3>{{ manager.surname }} {{ manager.name }}</h3>
         </div>
     </div>
     <div class="row">
@@ -36,7 +68,7 @@
             <h2>Общий вес</h2>
         </div>
         <div class="col-8">
-            <h3>{{ delivery.weight }}</h3>
+            <h3>{{ delivery.total_weight }}</h3>
         </div>
     </div>
     <div class="row">

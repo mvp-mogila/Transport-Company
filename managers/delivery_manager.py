@@ -11,7 +11,6 @@ database = DBContextManager(db_config)
 
 
 def get_user_deliveries(user_id, params):
-
     with database as cursor:
         if cursor:
             response_status = 200
@@ -61,6 +60,9 @@ def get_user_deliveries(user_id, params):
 
                 cursor.execute(sql_code)
                 result = cursor.fetchall()
+
+                if (result is None):
+                    response_status = 404
             else:
                 result = None
             return result, response_status
@@ -68,5 +70,28 @@ def get_user_deliveries(user_id, params):
             raise ValueError("ERROR. CURSOR NOT CREATED!")
 
 
-def create_new_delivery():
-    return None
+def get_delivery_info(delivery_id, user_id):
+    with database as cursor:
+        if cursor:
+            params = {'id': delivery_id, 'user_id': user_id}
+            response_status = 200
+
+            if (delivery_id < 0):
+                response_status = 400
+                result = None
+            else:
+                sql_code = sql_provider.get_sql('get_delivery_information.sql', params)
+                cursor.execute(sql_code)
+                result = cursor.fetchall()
+
+                if (result is None):
+                    response_status = 404
+        else:
+            raise ValueError("ERROR. CURSOR NOT CREATED!")
+
+    return result, response_status
+
+
+
+# def create_new_delivery():
+#     return None
