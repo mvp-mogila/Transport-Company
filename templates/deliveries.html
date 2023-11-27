@@ -20,7 +20,7 @@
             <tbody>
                 {% for delivery in deliveries %}
                     <tr>
-                        <th scope="row"><a href="delivery/{{ delivery.id }}" style="color: black; text-decoration: none;">{{ delivery.id }}</a></th>
+                        <th scope="row"><a href="{{ delivery.id }}" style="color: black; text-decoration: none;">{{ delivery.id }}</a></th>
                         <td>{{ delivery.send_date }}</td>
                         <td>{{ delivery.delivery_date }}</td>
                         <td>{{ delivery.delivery_address }}</td>

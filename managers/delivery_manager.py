@@ -75,7 +75,8 @@ def get_delivery_info(delivery_id, user_id):
         if cursor:
             params = {'id': delivery_id, 'user_id': user_id}
             response_status = 200
-
+            result = {}
+            
             if (delivery_id < 0):
                 response_status = 400
                 result = None
