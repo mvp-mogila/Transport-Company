@@ -5,8 +5,7 @@ import managers.user_manager as user
 import managers.transport_manager as transport
 
 
-deliveries_app = Blueprint('deliveries_app', __name__,
-                           template_folder="templates")
+deliveries_app = Blueprint('deliveries_app', __name__, template_folder="templates")
 
 
 @deliveries_app.route('/', methods=["GET"])
