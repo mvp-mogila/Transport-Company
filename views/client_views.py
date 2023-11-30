@@ -1,5 +1,7 @@
-from flask import Blueprint, request, render_template
+from math import log
+from flask import Blueprint, request, render_template, session
 
+from wrappers.access_control import login_required
 import managers.delivery_manager as delivery
 import managers.user_manager as user
 import managers.transport_manager as transport
@@ -9,6 +11,7 @@ deliveries_app = Blueprint('deliveries_app', __name__, template_folder="template
 
 
 @deliveries_app.route('/', methods=["GET"])
+@login_required
 def deliveries_handler():
     send_date = request.args.get('send_date')
     deliv_date = request.args.get('delivery_date')
@@ -16,7 +19,7 @@ def deliveries_handler():
     weight_upper = request.args.get('weight_upper')
     status = request.args.get('status')
 
-    user_id = 1  # session
+    user_id = session.get('user_id')
 
     deliveries, response_status = delivery.get_user_deliveries(user_id, 
                                             {'send_date': send_date,
@@ -36,7 +39,7 @@ def deliveries_handler():
     return render_template('deliveries.html', all=True, deliveries=deliveries, 
                            search_options=search_options, return_page_url='/'), response_status
 
-
+# @login_required
 # @deliveries_app.route('/<int:delivery_id>')
 # def delivey_handler(delivery_id):
 #     user_id = 1  # session
@@ -57,7 +60,7 @@ def deliveries_handler():
 #                            client=client_info, driver=driver_info, manager=manager_info, 
 #                            transport=transport_info, return_page_url='/delivery/'), response_status
 
-
+# @login_required
 # @deliveries_app.route('/new', methods=["GET", "POST"])
 # def new_delivery_handler():
 #     if (request.method == 'POST'):
