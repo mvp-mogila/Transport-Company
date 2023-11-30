@@ -3,10 +3,10 @@
 {% block content %}
 <form class="form-signup">
     <div class="col-md-8 container-fluid">
-        {% if user_not_found %}
-            <h2 style="color: crimson;">Ошибка! Введены некорректные данные</h3>
-        {% endif %}
         <h2>Вход в аккаунт</h2>
+        {% if user_not_found %}
+            <h3 style="color: crimson;">Ошибка! Введены некорректные данные</h3>
+        {% endif %}
         <div class="row">
             <div class="form-group">
                 <label class="col-form-label-lg">Имя пользователя</label>

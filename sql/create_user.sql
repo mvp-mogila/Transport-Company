@@ -1,0 +1,2 @@
+INSERT INTO User (username, pass, name, surname, fatherhood, staff_status, active_status, telephone_number)
+VALUES ('$username', '$pass', '$name', '$surname', '$fatherhood', FALSE, TRUE, '$telephone_number');

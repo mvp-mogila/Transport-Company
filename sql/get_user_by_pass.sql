@@ -1,3 +1,3 @@
 SELECT id
 FROM User
-WHERE username='$login' AND pass='$password';
+WHERE username='$username' AND pass='$pass';
