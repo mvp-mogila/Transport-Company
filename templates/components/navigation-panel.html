@@ -5,7 +5,7 @@
     <a href="/auth/sign-up" class="list-group-item">Создать аккаунт</a>
 {% else %}
     <a href="" class="list-group-item">Профиль</a>
-    <a href="" class="list-group-item">Выйти</a>
+    <a href="{{ url_for('auth_app.logout_handler') }}" class="list-group-item">Выйти</a>
 {% endif %}
 {% if return_page_url %}
     <a href="{{ return_page_url }}" class="list-group-item">Назад</a>

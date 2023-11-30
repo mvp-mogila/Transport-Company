@@ -57,3 +57,9 @@ def signup_handler():
         
         
     return render_template('signup.html', user_not_created = user_not_created, return_page_url = '/')
+
+
+@auth_app.route('/logout')
+def logout_handler():
+    session.clear()
+    return redirect(url_for('default_handler'), 302)
