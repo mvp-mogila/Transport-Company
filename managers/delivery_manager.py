@@ -1,13 +1,7 @@
 from datetime import date
 import re
 
-from database.connection import DBContextManager
-from database.sql_provider import SQLProvider
-from settings import db_config
-
-
-sql_provider = SQLProvider('sql')
-database = DBContextManager(db_config)
+from settings import database, sql_provider
 
 
 def get_user_deliveries(user_id, params):

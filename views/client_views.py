@@ -37,25 +37,25 @@ def deliveries_handler():
                            search_options=search_options, return_page_url='/'), response_status
 
 
-@deliveries_app.route('/<int:delivery_id>')
-def delivey_handler(delivery_id):
-    user_id = 1  # session
+# @deliveries_app.route('/<int:delivery_id>')
+# def delivey_handler(delivery_id):
+#     user_id = 1  # session
 
-    delivery_details, response_status = delivery.get_delivery_info(
-        delivery_id, user_id)
+#     delivery_details, response_status = delivery.get_delivery_info(
+#         delivery_id, user_id)
 
-    if (response_status == 400):
-        return "<center><h1>Некорректный запрос</h1></center>", response_status
+#     if (response_status == 400):
+#         return "<center><h1>Некорректный запрос</h1></center>", response_status
 
-    # if (response_status == 200):
-    #     client_info = user.get_user_fullname(user_id)
-    #     manager_info = user.get_user_fullname(delivery_datils[''])
-    #     driver_info = user.get_user_fullname(delivery_datils[''])
-    #     transport_info = transport.get_transport_info(delivery_dateils[''])
+#     # if (response_status == 200):
+#     #     client_info = user.get_user_fullname(user_id)
+#     #     manager_info = user.get_user_fullname(delivery_datils[''])
+#     #     driver_info = user.get_user_fullname(delivery_datils[''])
+#     #     transport_info = transport.get_transport_info(delivery_dateils[''])
 
-    return render_template('deliveries.html', all=False, delivery=delivery_details, 
-                           client=client_info, driver=driver_info, manager=manager_info, 
-                           transport=transport_info, return_page_url='/delivery/'), response_status
+#     return render_template('deliveries.html', all=False, delivery=delivery_details, 
+#                            client=client_info, driver=driver_info, manager=manager_info, 
+#                            transport=transport_info, return_page_url='/delivery/'), response_status
 
 
 # @deliveries_app.route('/new', methods=["GET", "POST"])
