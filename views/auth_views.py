@@ -14,7 +14,11 @@ def login_handler():
     if (login and password):
         user_info = user.validate_user(login, password)
         if (user_info):
-            session["user_id"] = user_info['id']
+            session['user_id'] = user_info['id']
+            if (user_info['staff_status']):
+                session['user_group'] = user_info['staff_group']
+
+            print(user_info)
             session.modified = True
             return redirect(url_for('default_handler'), 302)
         else:
