@@ -1,10 +1,15 @@
-<a href="/delivery/" class="list-group-item">Доставки</a>
-<a href="/delivery/new" class="list-group-item">Новая доставка</a>
+{if not staff %}
+    <a href="/delivery/" class="list-group-item">Доставки</a>
+    <a href="/delivery/new" class="list-group-item">Новая доставка</a>
+{% else %}
+    <a href="/admin/info" class="list-group-item">Информация</a>
+    <a href="/admin/report" class="list-group-item">Отчетность</a>
+{% endif %}
 {% if not logged %}
     <a href="/auth/login" class="list-group-item">Войти</a>
     <a href="/auth/sign-up" class="list-group-item">Создать аккаунт</a>
 {% else %}
-    <a href="" class="list-group-item">Профиль</a>
+    <a href="/profile/" class="list-group-item">Профиль</a>
     <a href="{{ url_for('auth_app.logout_handler') }}" class="list-group-item">Выйти</a>
 {% endif %}
 {% if return_page_url %}

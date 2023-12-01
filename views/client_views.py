@@ -1,4 +1,3 @@
-from math import log
 from flask import Blueprint, request, render_template, session
 
 from wrappers.access_control import login_required
@@ -37,7 +36,7 @@ def deliveries_handler():
                       {'name': "Статус", 'params': ["Завершен", "В работе", "Отменен", "Отклонен"], 'arg': 'status'}]
 
     return render_template('deliveries.html', all=True, deliveries=deliveries, 
-                           search_options=search_options, return_page_url='/'), response_status
+                           search_options=search_options, return_page_url='/', staff=False), response_status
 
 # @login_required
 # @deliveries_app.route('/<int:delivery_id>')

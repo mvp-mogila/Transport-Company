@@ -1,5 +1,3 @@
-from flask import session
-
 from settings import database, sql_provider
 
 
@@ -34,7 +32,7 @@ def check_user(login):
 
 def create_new_client(params):
     with database as cursor:
-        if cursor:
+        if (cursor):
             sql_code = sql_provider.get_sql('create_user.sql', params)
             rows_count = cursor.execute(sql_code)
             if (rows_count != 1):
@@ -49,5 +47,16 @@ def create_new_client(params):
             rows_count = cursor.execute(sql_code)
             if (rows_count != 1):
                 raise ValueError("ERROR. INSERTION CANCELLED!")
+        else:
+            raise ValueError("ERROR. CURSOR NOT CREATED!")
+        
+
+def user_info(user_id):
+    with database as cursor:
+        if (cursor):
+            params = {'id': user_id}
+            sql_code = sql_provider.get_sql('get_full_user_info.sql', params)
+            cursor.execute(sql_code)
+            return cursor.fetchone()
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")
