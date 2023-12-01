@@ -1,0 +1,76 @@
+{% extends '/layouts/base.html' %}
+
+{% block content %}
+
+<ul class="profile list-group list-group-flush">
+    <li class="list-group-item">
+        <div class="profile_row col-12">
+            <h3>ФИО:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ user.surname }} {{ user.name }} {{ user.fatherhood }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="profile_row col-12">
+            <h3>Имя пользователя:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ user.username }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="profile_row col-12">
+            <h3>Номер телефона:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ user.telephone_number }}</h3>
+        </div>
+    </li>
+    {% if staff %}
+    <li class="list-group-item">
+        <div class="profile_row col-12">
+            <h3>Дата рождения:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ staff.birth_date }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="profile_row col-12">
+            <h3>Должность:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ staff.position }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="profile_row col-12">
+            <h3>Дата получения должности:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ staff.position_date }}</h3>
+        </div>
+    </li>
+    {% endif %}
+    {% if client %}
+    <li class="list-group-item">
+        <div class="profile_row col-12">
+            <h3>Номер договора:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ client.doc_num }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="profile_row col-12">
+            <h3>Адрес:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ client.address }}</h3>
+        </div>
+    </li>
+    {% endif %}
+</ul>
+
+{% endblock %}

@@ -23,7 +23,7 @@ def default_handler():
         logged = True
         if ('user_group' in session):
             staff = True
-    return render_template('index.html', return_page_url=None, logged=logged, staff=staff)
+    return render_template('index.html', return_page_url=None, logged=logged, staff_status=staff)
 
 
 if (__name__ == '__main__'):
