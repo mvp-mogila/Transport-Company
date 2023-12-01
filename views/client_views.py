@@ -2,8 +2,8 @@ from flask import Blueprint, request, render_template, session
 
 from wrappers.access_control import login_required
 import managers.delivery_manager as delivery
-import managers.user_manager as user
-import managers.transport_manager as transport
+# import managers.user_manager as user
+# import managers.transport_manager as transport
 
 
 deliveries_app = Blueprint('deliveries_app', __name__, template_folder="templates")

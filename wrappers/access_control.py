@@ -1,6 +1,6 @@
 from flask import render_template, request, session, redirect, url_for
 from functools import wraps
-import json
+
 
 def login_required(func):
     @wraps(func)
@@ -8,7 +8,6 @@ def login_required(func):
         if ('user_id' in session):
             return func(*args, **kwargs)
         else:
-            print(1234)
             return redirect(url_for('auth_app.login_handler'))
     return wrapper
 
