@@ -87,6 +87,19 @@ def get_delivery_info(delivery_id, user_id):
     return result, response_status
 
 
-
 # def create_new_delivery():
 #     return None
+
+
+def count_deliveries(clients):
+    with database as cursor:
+        if (cursor):
+            for client in clients:
+                params = {'client_id': client['doc_num']}
+                sql_code = sql_provider.get_sql('count_client_deliveries.sql',params)
+                cursor.execute(sql_code)
+                result = cursor.fetchone()
+                client['deliveries_count'] = result['total_deliveries']
+            return clients
+        else:
+            raise ValueError("ERROR. CURSOR NOT CREATED!")

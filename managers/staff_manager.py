@@ -19,3 +19,13 @@ def parse_group(group):
         return {'admin': 0, 'manager': 1, 'driver': 0}
     if (group == 'Водитель'):
         return {'admin': 0, 'manager': 0, 'driver': 1}
+    
+
+def all_staff_info():
+    with database as cursor:
+        if (cursor):
+            sql_code = sql_provider.get_sql('get_all_staff_info.sql', None)
+            cursor.execute(sql_code)
+            return cursor.fetchall()
+        else:
+            raise ValueError('ERROR. CURSOR NOT CREATED!')

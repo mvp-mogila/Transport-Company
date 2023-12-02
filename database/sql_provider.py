@@ -13,5 +13,8 @@ class SQLProvider:
             template = Template(open(full_file_path, 'r').read())
             self._scripts[file_name] = template
         
-    def get_sql(self, template_name: str, params: dict) -> str:
-        return self._scripts[template_name].substitute(**params)
+    def get_sql(self, template_name: str, params) -> str:
+        if (params is None):
+            return self._scripts[template_name]
+        else:
+            return self._scripts[template_name].substitute(**params)

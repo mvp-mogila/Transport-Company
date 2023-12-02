@@ -1,0 +1,21 @@
+<h1>Клиенты</h1>
+<table class="table table-striped mt-3" style="background-color: azure;">
+    <thead>
+        <tr>
+            <th scope="col">Номер документа</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Номер телефона</th>
+            <th scope="col">Количество доставок</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in clients %}
+        <tr>
+            <td scope="row">{{ client.doc_num }}</td>
+            <td>{{ client.surname }}</td>
+            <td>{{ client.telephone_number }}</td>
+            <td>{{ client.deliveries_count }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

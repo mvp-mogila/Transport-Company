@@ -9,7 +9,7 @@ def validate_user(login, password):
             cursor.execute(sql_code)
             user_info = cursor.fetchone()
             if (user_info['staff_status']):
-                sql_code = sql_provider.get_sql('get_staff_by_user_id.sql', {'user_id': user_info['id']})
+                sql_code = sql_provider.get_sql('get_position_by_user_id.sql', {'user_id': user_info['id']})
                 cursor.execute(sql_code)
                 staff_group = cursor.fetchone()
                 user_info['staff_group'] = staff_group['position']

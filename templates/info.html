@@ -30,9 +30,18 @@
             <a class="list-group-item list-group-item-action" href="{{ url_for('staff_app.transport_info_handler') }}">
                 Транспорт
             </a>
-            <!-- <a class="list-group-item list-group-item-action" href="{{ url_for('cargo_info_handler')}}">
-                Грузы
-            </a> -->
+        {% endif %}
+        {% if clients %}
+            {% include 'components/client-info.html' %}
+        {% endif %}
+        {% if staffs %}
+            {% include 'components/client-info.html' %}
+        {% endif %}
+        {% if transports %}
+            {% include 'components/client-info.html' %}
+        {% endif %}
+        {% if deliveries %}
+            {% include 'components/client-info.html' %}
         {% endif %}
     </div>
 </div>
