@@ -23,4 +23,4 @@ def profile_handler():
         staff_status = False
 
     return render_template('profile.html', user=user_info, staff=staff_info,
-                           client=client_info, staff_status=staff_status, return_page_url='/'), 200
+                           client=client_info, staff_status=staff_status, return_page_url='/', logged=True), 200

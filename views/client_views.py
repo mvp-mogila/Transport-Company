@@ -36,11 +36,12 @@ def deliveries_handler():
                       {'name': "Статус", 'params': ["Завершен", "В работе", "Отменен", "Отклонен"], 'arg': 'status'}]
 
     return render_template('deliveries.html', all=True, deliveries=deliveries, 
-                           search_options=search_options, return_page_url='/', staff=False), response_status
+                           search_options=search_options, return_page_url='/', staff=False, logged=True), response_status
+
 
 # @login_required
 # @deliveries_app.route('/<int:delivery_id>')
-# def delivey_handler(delivery_id):
+# def delivery_handler(delivery_id):
 #     user_id = 1  # session
 
 #     delivery_details, response_status = delivery.get_delivery_info(

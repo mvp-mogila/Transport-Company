@@ -14,7 +14,7 @@ staff_app = Blueprint('staff_app', __name__, template_folder='templates')
 def default_info_handler():
     user_group = session.get('user_group')
     group = staff.parse_group(user_group)
-    return render_template('info.html', group=group, staff=True, return_page_url='/'), 200
+    return render_template('info.html', group=group, staff=True, return_page_url='/', logged=True), 200
 
 
 # @group_required
@@ -28,7 +28,8 @@ def client_info_handler():
         clients = delivery.count_deliveries(clients)
     else:
         response_code = 404
-    return render_template('info.html', group=group, staff=True, clients=clients, return_page_url='/staff/info'), response_code
+    return render_template('info.html', group=group, staff=True, clients=clients,
+                           return_page_url='/staff/info', logged=True), response_code
 
 
 # @group_required
@@ -40,7 +41,8 @@ def staff_info_handler():
     response_code = 200
     if (not staffs):
         response_code = 404
-    return render_template('info.html', group=group, staff=True, staffs=staffs, return_page_url='/staff/info'), response_code
+    return render_template('info.html', group=group, staff=True, staffs=staffs,
+                           return_page_url='/staff/info', logged=True), response_code
 
 
 # @group_required
@@ -52,7 +54,8 @@ def transport_info_handler():
     response_code = 200
     if (not transports):
         response_code = 404
-    return render_template('info.html', group=group, staff=True, transports=transports, return_page_url='/staff/info'), response_code
+    return render_template('info.html', group=group, staff=True, transports=transports,
+                           return_page_url='/staff/info', logged=True), response_code
 
 
 # @group_required
@@ -60,4 +63,5 @@ def transport_info_handler():
 def delivery_info_handler():
     user_group = session.get('user_group')
     group = staff.parse_group(user_group)
-    return render_template('info.html', group=group, staff=True, delivery_info=True, return_page_url='/staff/info')
+    return render_template('info.html', group=group, staff=True, delivery_info=True,
+                           return_page_url='/staff/info')
