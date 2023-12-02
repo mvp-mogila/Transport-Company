@@ -1,7 +1,6 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-
 <div class="container">
     <div class="list-group p-3 fs-4">
         <a class="list-group-item list-group-item-action" href="{{ url_for('staff_app.delivery_info_handler') }}">
@@ -12,7 +11,7 @@
                 Сотрудники
             </a>
             <a class="list-group-item list-group-item-action" href="{{ url_for('staff_app.client_info_handler') }}">
-                Пользователи
+                Клиенты
             </a>
             <a class="list-group-item list-group-item-action" href="{{ url_for('staff_app.transport_info_handler') }}">
                 Транспорт
@@ -31,19 +30,6 @@
                 Транспорт
             </a>
         {% endif %}
-        {% if clients %}
-            {% include 'components/client-info.html' %}
-        {% endif %}
-        {% if staffs %}
-            {% include 'components/client-info.html' %}
-        {% endif %}
-        {% if transports %}
-            {% include 'components/client-info.html' %}
-        {% endif %}
-        {% if deliveries %}
-            {% include 'components/client-info.html' %}
-        {% endif %}
     </div>
 </div>
-
 {% endblock %}

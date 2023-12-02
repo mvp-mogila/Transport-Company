@@ -35,7 +35,7 @@ def deliveries_handler():
                       {'name': "Вес (до)", 'params': None, 'arg': 'weight_upper'},
                       {'name': "Статус", 'params': ["Завершен", "В работе", "Отменен", "Отклонен"], 'arg': 'status'}]
 
-    return render_template('deliveries.html', all=True, deliveries=deliveries, 
+    return render_template('deliveries.html', all=True, user_deliveries=deliveries, 
                            search_options=search_options, return_page_url='/', staff=False, logged=True), response_status
 
 

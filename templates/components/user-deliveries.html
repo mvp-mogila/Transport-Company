@@ -1,0 +1,24 @@
+<table class="table table-striped mt-3" style="background-color: azure;">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Дата отправки</th>
+        <th scope="col">Дата доставки</th>
+        <th scope="col">Адрес</th>
+        <th scope="col">Общий вес</th>
+        <th scope="col">Статус</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for delivery in user_deliveries %}
+            <tr>
+                <th scope="row"><a href="{{ delivery.id }}" style="color: black; text-decoration: none;">{{ delivery.id }}</a></th>
+                <td>{{ delivery.send_date }}</td>
+                <td>{{ delivery.delivery_date }}</td>
+                <td>{{ delivery.delivery_address }}</td>
+                <td>{{ delivery.total_weight }}</td>
+                <td>{{ delivery.delivery_status }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
