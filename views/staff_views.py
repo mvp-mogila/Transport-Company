@@ -1,14 +1,17 @@
 from flask import Blueprint, request, render_template, session
 
 # from wrappers.access_control import group_required
+import managers.staff_manager as staff
 
-staff_app = Blueprint('staff_app', template_folder='templates')
+staff_app = Blueprint('staff_app', __name__, template_folder='templates')
 
 
 #@group_required
 @staff_app.route('/info', methods=['GET'])
-def default_info_hadler():
-    return render_template('info.html', staff=True)
+def default_info_handler():
+    user_group = session.get('user_group')
+    group = staff.parse_group(user_group)
+    return render_template('info.html', group=group, staff=True, return_page_url='/')
 
 
 # @group_required

@@ -1,0 +1,40 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="list-group p-3 fs-4">
+        <a class="list-group-item list-group-item-action" href="{{ url_for('staff_app.delivery_info_handler') }}">
+            Доставки
+        </a>
+        {% if group['admin'] %}
+            <a class="list-group-item list-group-item-action" href="{{ url_for('staff_app.staff_info_handler') }}">
+                Сотрудники
+            </a>
+            <a class="list-group-item list-group-item-action" href="{{ url_for('staff_app.client_info_handler') }}">
+                Пользователи
+            </a>
+            <a class="list-group-item list-group-item-action" href="{{ url_for('staff_app.transport_info_handler') }}">
+                Транспорт
+            </a>
+        {% endif %}
+        {% if group['manager'] %}
+            <a class="list-group-item list-group-item-action" href="{{ url_for('staff_app.transport_info_handler') }}">
+                Транспорт
+            </a>
+            <a class="list-group-item list-group-item-action" href="{{ url_for('staff_app.delivery_info_handler') }}">
+                Водители
+            </a>
+        {% endif %}
+        {% if group['driver'] %}
+            <a class="list-group-item list-group-item-action" href="{{ url_for('staff_app.transport_info_handler') }}">
+                Транспорт
+            </a>
+            <!-- <a class="list-group-item list-group-item-action" href="{{ url_for('cargo_info_handler')}}">
+                Грузы
+            </a> -->
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
