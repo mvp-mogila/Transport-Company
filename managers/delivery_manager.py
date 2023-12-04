@@ -1,4 +1,3 @@
-from datetime import date
 import re
 
 from settings import database, sql_provider
@@ -8,19 +7,6 @@ def get_user_deliveries(user_id, params):
     with database as cursor:
         if cursor:
             response_status = 200
-
-            date_pattern = re.compile("^[0-9][1-9]\-[0-9][1-9]\-[1-2][0-9][0-9][0-9]")
-
-            if (not params.get('send_date')):
-                params['send_date'] = '01-01-1970'
-            elif (not date_pattern.match(params.get('send_date'))):
-                response_status = 400
-            
-            if (not params.get('delivery_date')):
-                today = date.today()
-                params['delivery_date'] = f'{today.day}-{today.month}-{today.year}'
-            elif (not date_pattern.match(params.get('delivery_date'))):
-                response_status = 400
 
             if (not params.get('weight_lower')):
                 params['weight_lower'] = 0
@@ -47,11 +33,10 @@ def get_user_deliveries(user_id, params):
                 if (params.get('status')):
                     if (params.get('status') not in [ "Завершен", "В работе", "Отменен" ]):
                         response_status = 400
-                    else:
-                        sql_code = sql_provider.get_sql('get_user_deliveries_with_status.sql', params)
                 else:
-                    sql_code = sql_provider.get_sql('get_user_deliveries.sql', params)
+                    params['status'] = 'Завершен'
 
+                sql_code = sql_provider.get_sql('get_client_deliveries.sql', params)
                 cursor.execute(sql_code)
                 result = cursor.fetchall()
 
@@ -101,5 +86,43 @@ def count_deliveries(clients):
                 result = cursor.fetchone()
                 client['deliveries_count'] = result['total_deliveries']
             return clients
+        else:
+            raise ValueError("ERROR. CURSOR NOT CREATED!")
+        
+
+def all_deliveries_info(params):
+     with database as cursor:
+        if cursor:
+            response_status = 200
+
+            date_pattern = re.compile("^((0[1-9])|([1-2][0-9])|(3[0-1]))\-((0[1-9])|(1[0-2]))\-(20[0-2][0-9])")
+
+            if (not params.get('send_date')):
+                params['send_date'] = '01-01-1970'
+            elif (not date_pattern.match(params.get('send_date'))):
+                response_status = 400
+            
+            if (not params.get('delivery_date')):
+                params['delivery_date'] = '01-01-1970'
+            elif (not date_pattern.match(params.get('delivery_date'))):
+                response_status = 400
+
+            if (response_status != 400):
+                if (params.get('status')):
+                    if (params.get('status') not in ["Завершен", "В работе", "Отменен"]):
+                        response_status = 400
+                    else:
+                        sql_code = sql_provider.get_sql('get_all_deliveries_info_with_status.sql', params)
+                else:
+                    sql_code = sql_provider.get_sql('get_all_deliveries_info.sql', params)
+
+                cursor.execute(sql_code)
+                result = cursor.fetchall()
+
+                if (result is None):
+                    response_status = 404
+            else:
+                result = None
+            return result, response_status
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")

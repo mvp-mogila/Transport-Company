@@ -12,8 +12,6 @@ deliveries_app = Blueprint('deliveries_app', __name__, template_folder="template
 @deliveries_app.route('/', methods=["GET"])
 @login_required
 def deliveries_handler():
-    send_date = request.args.get('send_date')
-    deliv_date = request.args.get('delivery_date')
     weight_lower = request.args.get('weight_lower')
     weight_upper = request.args.get('weight_upper')
     status = request.args.get('status')
@@ -21,19 +19,15 @@ def deliveries_handler():
     user_id = session.get('user_id')
 
     deliveries, response_status = delivery.get_user_deliveries(user_id, 
-                                            {'send_date': send_date,
-                                              'delivery_date': deliv_date,
-                                              'weight_lower': weight_lower,
+                                            {'weight_lower': weight_lower,
                                               'weight_upper': weight_upper,
                                               'status': status})
     if (response_status == 400):
         return "<center><h1>Некорректный запрос</h1></center>", response_status
 
-    search_options = [{'name': "Дата отправки dd-mm-yyy", 'params': None, 'arg': 'send_date'},
-                      {'name': "Дата доставки dd-mm-yyy", 'params': None, 'arg': 'delivery_date'},
-                      {'name': "Вес (от)", 'params': None, 'arg': 'weight_lower'},
+    search_options = [{'name': "Вес (от)", 'params': None, 'arg': 'weight_lower'},
                       {'name': "Вес (до)", 'params': None, 'arg': 'weight_upper'},
-                      {'name': "Статус", 'params': ["Завершен", "В работе", "Отменен", "Отклонен"], 'arg': 'status'}]
+                      {'name': "Статус", 'params': ["Завершен", "В работе", "Отменен"], 'arg': 'status'}]
 
     return render_template('deliveries.html', all=True, user_deliveries=deliveries, 
                            search_options=search_options, return_page_url='/', staff=False, logged=True), response_status

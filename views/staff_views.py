@@ -1,3 +1,4 @@
+from urllib import response
 from flask import Blueprint, request, render_template, session
 
 # from wrappers.access_control import group_required
@@ -60,9 +61,25 @@ def transport_info_handler():
 
 
 # @group_required
-@staff_app.route('/info/deliveries', methods=['GET', 'POST'])
+@staff_app.route('/info/deliveries', methods=['GET'])
 def delivery_info_handler():
     user_group = session.get('user_group')
     group = staff.parse_group(user_group)
-    return render_template('info.html', group=group, staff_status=True, delivery_info=True,
-                           return_page_url='/')
+
+    send_date = request.args.get('send_date')
+    deliv_date = request.args.get('delivery_date')
+    status = request.args.get('status')
+
+    deliveries, response_code = delivery.all_deliveries_info({'send_date': send_date, 
+                                                                'delivery_date': deliv_date,
+                                                                'status': status})
+
+    if (response_code == 400):
+        return "<center><h1>Некорректный запрос</h1></center>", response_code
+
+    search_options = [{'name': "Дата отправки dd-mm-yyy", 'params': None, 'arg': 'send_date'},
+                      {'name': "Дата доставки dd-mm-yyy", 'params': None, 'arg': 'delivery_date'},
+                      {'name': "Статус", 'params': ["Завершен", "В работе", "Отменен"], 'arg': 'status'}]
+    
+    return render_template('info.html', group=group, staff_status=True, deliveries=deliveries,
+                           return_page_url='/', logged=True, search_options=search_options), response_code

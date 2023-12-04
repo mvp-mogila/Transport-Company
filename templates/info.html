@@ -30,6 +30,9 @@
                 Транспорт
             </a>
         {% endif %}
+        {% if deliveries %}
+            {% include 'components/search.html' %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}
