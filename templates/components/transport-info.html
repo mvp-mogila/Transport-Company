@@ -1,0 +1,25 @@
+<h3>Транспорт</h3>
+<table class="table table-striped mt-3" style="background-color: azure;">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Модель</th>
+            <th scope="col">Год выпуска</th>
+            <th scope="col">Регистрационный номер</th>
+            <th scope="col">Грузоподъемность</th>
+            <th scope="col">Состояние</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transport in transports %}
+        <tr>
+            <td scope="row">{{ transport.id }}</td>
+            <td>{{ transport.model }}</td>
+            <td>{{ transport.release_year }}</td>
+            <td>{{ transport.registration_number }}</td>
+            <td>{{ transport.capacity }}</td>
+            <td>{{ transport.status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

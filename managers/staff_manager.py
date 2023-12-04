@@ -21,7 +21,7 @@ def parse_group(group):
         return {'admin': 0, 'manager': 0, 'driver': 1}
     
 
-def all_staff_info():
+def all_staffs_info():
     with database as cursor:
         if (cursor):
             sql_code = sql_provider.get_sql('get_all_staffs_info.sql', dict())

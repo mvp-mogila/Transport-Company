@@ -37,7 +37,7 @@ def client_info_handler():
 def staff_info_handler():
     user_group = session.get('user_group')
     group = staff.parse_group(user_group)
-    staffs = staff.all_staff_info()
+    staffs = staff.all_staffs_info()
     response_code = 200
     if (not staffs):
         response_code = 404
@@ -50,10 +50,11 @@ def staff_info_handler():
 def transport_info_handler():
     user_group = session.get('user_group')
     group = staff.parse_group(user_group)
-    transports = transport.all_transport_info()
+    transports = transport.all_transports_info()
     response_code = 200
     if (not transports):
         response_code = 404
+    print(transports)
     return render_template('info.html', group=group, staff_status=True, transports=transports,
                            return_page_url='/', logged=True), response_code
 
