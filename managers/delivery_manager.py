@@ -1,3 +1,4 @@
+from queue import Empty
 import re
 
 from settings import database, sql_provider
@@ -91,35 +92,39 @@ def count_deliveries(clients):
         
 
 def all_deliveries_info(params):
-     with database as cursor:
+    with database as cursor:
         if cursor:
             response_status = 200
 
             date_pattern = re.compile("^((0[1-9])|([1-2][0-9])|(3[0-1]))\-((0[1-9])|(1[0-2]))\-(20[0-2][0-9])")
 
-            if (not params.get('send_date')):
-                params['send_date'] = '01-01-1970'
-            elif (not date_pattern.match(params.get('send_date'))):
+            if (params.get('send_date') and not date_pattern.match(params.get('send_date'))):
                 response_status = 400
             
-            if (not params.get('delivery_date')):
-                params['delivery_date'] = '01-01-1970'
-            elif (not date_pattern.match(params.get('delivery_date'))):
+            if (params.get('delivery_date') and not date_pattern.match(params.get('delivery_date'))):
                 response_status = 400
 
             if (response_status != 400):
                 if (params.get('status')):
-                    if (params.get('status') not in ["Завершен", "В работе", "Отменен"]):
+                    if (params.get('status') not in [ "Завершен", "В работе", "Отменен" ]):
                         response_status = 400
-                    else:
-                        sql_code = sql_provider.get_sql('get_all_deliveries_info_with_status.sql', params)
+                else:
+                    params['status'] = 'Завершен'
+
+            if (response_status != 400):
+                if (params.get('send_date') and params.get('delivery_date')):
+                    sql_code = sql_provider.get_sql('get_all_deliveries_info_with_send_delivery_date.sql', params)
+                elif (params.get('send_date') and not params.get('delivery_date')):
+                    sql_code = sql_provider.get_sql('get_all_deliveries_info_with_send_date.sql', params)
+                elif (not params.get('send_date') and params.get('delivery_date')):
+                    sql_code = sql_provider.get_sql('get_all_deliveries_info_with_delivery_date.sql', params)
                 else:
                     sql_code = sql_provider.get_sql('get_all_deliveries_info.sql', params)
 
                 cursor.execute(sql_code)
                 result = cursor.fetchall()
-
-                if (result is None):
+                
+                if (not result):
                     response_status = 404
             else:
                 result = None
