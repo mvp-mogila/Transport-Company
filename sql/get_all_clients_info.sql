@@ -1,1 +1,1 @@
-SELECT Client.*, User.* FROM Client JOIN User ON User.id=Client.user_id;
+SELECT Client.*, User.* FROM Client JOIN User ON Client.user_id=User.id;

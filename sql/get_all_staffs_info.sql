@@ -1,0 +1,1 @@
+SELECT Staff.*, User.* FROM Staff JOIN User on Staff.user_id=User.id;

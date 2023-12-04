@@ -1,0 +1,23 @@
+<h3>Сотрудники</h3>
+<table class="table table-striped mt-3" style="background-color: azure;">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Номер телефона</th>
+            <th scope="col">Должность</th>
+            <th scope="col">Дата получения должности</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for staff in staffs %}
+        <tr>
+            <td scope="row">{{ staff.id }}</td>
+            <td>{{ staff.surname }}</td>
+            <td>{{ staff.telephone_number }}</td>
+            <td>{{ staff.position }}</td>
+            <td>{{ staff.position_date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
