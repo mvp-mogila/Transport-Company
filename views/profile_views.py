@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, session
 
-from wrappers.access_control import login_required
+from services.access_control import login_required
 import managers.user_manager as user
 import managers.staff_manager as staff
 import managers.client_manager as client

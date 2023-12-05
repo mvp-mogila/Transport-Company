@@ -1,4 +1,3 @@
-from queue import Empty
 import re
 
 from settings import database, sql_provider
@@ -50,31 +49,30 @@ def get_user_deliveries(user_id, params):
             raise ValueError("ERROR. CURSOR NOT CREATED!")
 
 
-def get_delivery_info(delivery_id, user_id):
+def get_delivery_info(delivery_id, user_id = None):
     with database as cursor:
         if cursor:
-            params = {'id': delivery_id, 'user_id': user_id}
-            response_status = 200
-            result = {}
-            
-            if (delivery_id < 0):
-                response_status = 400
-                result = None
+            if (user_id):
+                params = {'id': delivery_id, 'client_id': user_id}
+                if (delivery_id < 0):
+                    return None, 400
+                else:
+                    sql_code = sql_provider.get_sql('get_client_delivery.sql', params)
             else:
-                sql_code = sql_provider.get_sql('get_delivery_information.sql', params)
-                cursor.execute(sql_code)
-                result = cursor.fetchall()
+                params = {'id': delivery_id}
+                sql_code = sql_provider.get_sql('get_delivery.sql', params)
+                
+            cursor.execute(sql_code)
+            result = cursor.fetchone()
 
-                if (result is None):
-                    response_status = 404
+            if (result is None):
+                response_status = 404
+            else:
+                response_status = 200
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")
 
     return result, response_status
-
-
-# def create_new_delivery():
-#     return None
 
 
 def count_deliveries(clients):
@@ -129,5 +127,25 @@ def all_deliveries_info(params):
             else:
                 result = None
             return result, response_status
+        else:
+            raise ValueError("ERROR. CURSOR NOT CREATED!")
+
+
+def process_delivery(params):
+     with database as cursor:
+        if cursor:
+            response_status = 200
+            if (params.get('status') == 'Отменить'):
+                sql_code = sql_provider.get_sql('cancel_delivery.sql', params)
+            elif (params.get('manager') and params.get('driver') and params.get('transport') and params.get('status')):
+                sql_code = sql_provider.get_sql('update_delivery.sql', params)
+            else:
+                response_status = 204
+                return response_status
+            rows_count = cursor.execute(sql_code)
+                
+            if (not rows_count):
+                response_status = 500
+            return response_status
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")

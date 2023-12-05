@@ -1,0 +1,80 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<h2>Доставка {{ delivery.id }}</h2>
+<ul class="delivery list-group list-group-flush">
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Номер документа клиента:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.client_id }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Дата отправки:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.send_date }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Дата доставки:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.delivery_date }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Адрес отправки:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.send_address }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Адрес доставки:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.delivery_address }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Общий вес:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.total_weight }}</h3>
+        </div>
+    </li>
+</ul>
+
+{% if options %}
+    <h2>Обработка</h2>
+    <form method="POST">
+        <div class="form-row">
+            {% for option in options %}
+                <div class="col">
+                    <label>{{ option.name }}</label>
+                    <select class="form-control form-control-md" name="{{ option.arg }}">
+                        <option value="">Указать</option>
+                        {% for param in option.params %}
+                            <option>{{ param }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-success mt-3">Создать</button>
+        </div>
+    </form>
+{% endif %}
+
+{% if not_set %}
+    <h2 style="color: red;">Параметры не заданы</h2>
+{% endif %}
+
+{% endblock %}

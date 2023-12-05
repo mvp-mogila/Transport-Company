@@ -29,3 +29,23 @@ def all_staffs_info():
             return cursor.fetchall()
         else:
             raise ValueError('ERROR. CURSOR NOT CREATED!')
+        
+    
+def get_managers():
+    with database as cursor:
+        if (cursor):
+            sql_code = sql_provider.get_sql('get_all_managers.sql', dict())
+            cursor.execute(sql_code)
+            return cursor.fetchall()
+        else:
+            raise ValueError('ERROR. CURSOR NOT CREATED!')
+        
+    
+def get_drivers():
+    with database as cursor:
+        if (cursor):
+            sql_code = sql_provider.get_sql('get_all_drivers.sql', dict())
+            cursor.execute(sql_code)
+            return cursor.fetchall()
+        else:
+            raise ValueError('ERROR. CURSOR NOT CREATED!')

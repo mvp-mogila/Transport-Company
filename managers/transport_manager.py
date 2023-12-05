@@ -9,3 +9,13 @@ def all_transports_info():
             return cursor.fetchall()
         else:
             raise ValueError('ERROR. CURSOR NOT CREATED!')
+        
+
+def get_ready_trasnport():
+    with database as cursor:
+        if (cursor):
+            sql_code = sql_provider.get_sql('get_all_ready_transports.sql', dict())
+            cursor.execute(sql_code)
+            return cursor.fetchall()
+        else:
+            raise ValueError('ERROR. CURSOR NOT CREATED!')

@@ -1,0 +1,1 @@
+SELECT * FROM Invoice WHERE Invoice.id='$id';

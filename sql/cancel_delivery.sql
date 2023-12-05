@@ -1,0 +1,1 @@
+UPDATE Invoice SET delivery_status = 'Отменен' WHERE id='$id';
