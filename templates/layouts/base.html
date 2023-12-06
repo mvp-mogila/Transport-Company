@@ -41,6 +41,9 @@
                     {% if deliveries %}
                         {% include 'components/delivery-info.html' %}
                     {% endif %}
+                    {% if deliveries_not_found %}
+                        {% include 'components/delivery-info.html' %}
+                    {% endif %}
                     {% if user_deliveries %}
                         {% include 'components/user-deliveries.html' %}
                     {% endif %}

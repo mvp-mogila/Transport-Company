@@ -1,8 +1,8 @@
-from http.client import BAD_REQUEST, NO_CONTENT, NOT_FOUND, OK
+from http.client import BAD_REQUEST, NOT_FOUND, OK
 import re
 
 from settings import database, sql_provider
-from services.additional import convert_date
+
 
 def get_user_deliveries(params):
     with database as cursor:

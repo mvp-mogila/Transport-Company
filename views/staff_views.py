@@ -1,4 +1,4 @@
-from http.client import NOT_FOUND, BAD_REQUEST
+from http.client import NO_CONTENT, NOT_FOUND, BAD_REQUEST
 from werkzeug.exceptions import NotFound, BadRequest
 from flask import Blueprint, request, render_template, session
 
@@ -68,8 +68,11 @@ def delivery_info_handler():
     deliveries, response_code = delivery.all_deliveries_info({'delivery_id': delivery_id,
                     'send_date': send_date, 'delivery_date': deliv_date, 'status': status})
     
+    deliveries_not_found = False
     if (response_code == BAD_REQUEST):
         raise BadRequest
+    if (response_code == NOT_FOUND):
+        deliveries_not_found = True
 
     form_method = "GET"
     button_title = "Поиск"
@@ -79,7 +82,7 @@ def delivery_info_handler():
                 {'name': "Статус", 'params': ["Завершен", "В работе", "Отменен"], 'arg': 'status', 'type': None} ]
     
     return render_template('info.html', group=group, staff_status=True, deliveries=deliveries,form_method=form_method,
-                           options=search_options, button_title=button_title, logged=True, return_url='/')
+            deliveries_not_found=deliveries_not_found, options=search_options, button_title=button_title, logged=True, return_url='/')
 
 
 # @group_required
@@ -96,19 +99,20 @@ def delivery_process_handler(delivery_id):
     drivers = create_rows(drivers_list, 'id')
     transports = create_rows(transports_list, 'id')
     
-
     delivery_info, response_code = delivery.get_delivery_info(delivery_id)
 
     not_found = False
-    if (response_code == 400):
-        return "<center><h1>Некорректный запрос</h1></center>", response_code
-    elif (response_code == 404):
-        not_found = True
+    if (response_code == BAD_REQUEST):
+        raise BadRequest
+    if (response_code == NOT_FOUND):
+        raise NotFound
 
-    options = [ {'name': "Экспедитор", 'params': managers, 'arg': 'manager'},
-                {'name': "Водитель", 'params': drivers, 'arg': 'driver'},
-                {'name': "Автомобиль", 'params': transports, 'arg': 'transport'},
-                {'name': "Статус", 'params': ['Взять в работу', 'Отменить', 'Завершить'], 'arg': 'status'} ]
+    form_method = "POST"
+    button_title = "Подтвердить"
+    options = [ {'name': "Экспедитор", 'params': managers, 'arg': 'manager', 'type': None},
+                {'name': "Водитель", 'params': drivers, 'arg': 'driver', 'type': None},
+                {'name': "Автомобиль", 'params': transports, 'arg': 'transport', 'type': None},
+                {'name': "Статус", 'params': ['Взять в работу', 'Отменить', 'Завершить'], 'arg': 'status', 'type': None}]
 
     not_set = False
     if (request.method == 'POST'):
@@ -121,8 +125,9 @@ def delivery_process_handler(delivery_id):
 
         response_code = delivery.process_delivery(params)
 
-        if (response_code == 204):
+        if (response_code == NO_CONTENT):
             not_set = True
 
     return render_template('delivery-process.html', group=group, staff_status=True, delivery=delivery_info,
-                            return_page_url='/staff/info', logged=True, options=options, not_found=not_found, not_set=not_set), response_code
+                form_method=form_method, button_title=button_title, options=options, 
+                return_url='/staff/info', logged=True, not_found=not_found, not_set=not_set)

@@ -2,42 +2,46 @@
     {% include 'components/form-control.html' %}
 </div>
 
-<h3>Доставки</h3>
-<table class="table table-striped mt-3" style="background-color: azure;">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Номер документа клиента</th>
-            <th scope="col">Дата отправки</th>
-            <th scope="col">Дата доставки</th>
-            <th scope="col">Адрес отправки</th>
-            <th scope="col">Адрес доставки</th>
-            <th scope="col">Вес</th>
-            <th scope="col">Экспедитор</th>
-            <th scope="col">Клиент</th>
-            <th scope="col">Автомобиль</th>
-            <th scope="col">Статус</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for delivery in deliveries %}
-        <tr>
-            <th scope="row">
-                <a href="{{ url_for('staff_app.delivery_process_handler', delivery_id=delivery.id) }}" style="color: black; text-decoration: none;">
-                    {{ delivery.id }}
-                </a>
-            </th>
-            <td>{{ delivery.client_id }}</td>
-            <td>{{ delivery.send_date }}</td>
-            <td>{{ delivery.delivery_date }}</td>
-            <td>{{ delivery.send_address }}</td>
-            <td>{{ delivery.delivery_address }}</td>
-            <td>{{ delivery.total_weight }}</td>
-            <td>{{ delivery.manager_surname }}</td>
-            <td>{{ delivery.driver_surname }}</td>
-            <td>{{ delivery.transport_model }}</td>
-            <td>{{ delivery.delivery_status }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% if not deliveries %}
+    <h3 style="color: red; margin-top: 20px;">По данному запросу доставок не найдено</h3>
+{% else %}
+    <h3>Доставки</h3>
+    <table class="table table-striped mt-3" style="background-color: azure;">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Номер документа клиента</th>
+                <th scope="col">Дата отправки</th>
+                <th scope="col">Дата доставки</th>
+                <th scope="col">Адрес отправки</th>
+                <th scope="col">Адрес доставки</th>
+                <th scope="col">Вес</th>
+                <th scope="col">Экспедитор</th>
+                <th scope="col">Клиент</th>
+                <th scope="col">Автомобиль</th>
+                <th scope="col">Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for delivery in deliveries %}
+            <tr>
+                <th scope="row">
+                    <a href="{{ url_for('staff_app.delivery_process_handler', delivery_id=delivery.id) }}" style="color: black; text-decoration: none;">
+                        {{ delivery.id }}
+                    </a>
+                </th>
+                <td>{{ delivery.client_id }}</td>
+                <td>{{ delivery.send_date }}</td>
+                <td>{{ delivery.delivery_date }}</td>
+                <td>{{ delivery.send_address }}</td>
+                <td>{{ delivery.delivery_address }}</td>
+                <td>{{ delivery.total_weight }}</td>
+                <td>{{ delivery.manager_surname }}</td>
+                <td>{{ delivery.driver_surname }}</td>
+                <td>{{ delivery.transport_model }}</td>
+                <td>{{ delivery.delivery_status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
