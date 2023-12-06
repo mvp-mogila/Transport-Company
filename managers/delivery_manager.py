@@ -1,78 +1,59 @@
+from http.client import BAD_REQUEST, NO_CONTENT, NOT_FOUND, OK
 import re
 
 from settings import database, sql_provider
+from services.additional import convert_date
 
-
-def get_user_deliveries(user_id, params):
+def get_user_deliveries(params):
     with database as cursor:
         if cursor:
-            response_status = 200
-
             if (not params.get('weight_lower')):
                 params['weight_lower'] = 0
             else:
                 try:
                     int_weight = int(params.get('weight_lower'))
-                    if (int_weight < 0):
-                        response_status = 400
-                except ValueError:
-                    response_status = 400
+                    (int_weight >= 0)
+                except ValueError or AssertionError:
+                    return None, BAD_REQUEST
 
             if (not params.get('weight_upper')):
                 params['weight_upper'] = 1000000
             else:
                 try:
                     int_weight = int(params.get('weight_upper'))
-                    if (int_weight < 0):
-                        response_status = 400
-                except ValueError:
-                    response_status = 400
+                    (int_weight >= 0)
+                except ValueError or AssertionError:
+                    return None, BAD_REQUEST
 
-            if (response_status != 400):
-                params['user_id'] = user_id
-                if (params.get('status')):
-                    if (params.get('status') not in [ "Завершен", "В работе", "Отменен" ]):
-                        response_status = 400
-                else:
-                    params['status'] = 'Завершен'
+            if (not params.get('status')):
+                params['status'] = '%'
+            elif (params.get('status') not in ["Завершен", "В работе", "Отменен"]):
+                return None, BAD_REQUEST
 
-                sql_code = sql_provider.get_sql('get_client_deliveries.sql', params)
-                cursor.execute(sql_code)
-                result = cursor.fetchall()
-
-                if (result is None):
-                    response_status = 404
-            else:
-                result = None
-            return result, response_status
+            sql_code = sql_provider.get_sql('get_client_deliveries.sql', params)
+            cursor.execute(sql_code)
+            result = cursor.fetchall()
+            if (not result):
+                return None, NO_CONTENT
+            return result, OK
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")
 
 
-def get_delivery_info(delivery_id, user_id = None):
+def get_user_delivery(params):
     with database as cursor:
         if cursor:
-            if (user_id):
-                params = {'id': delivery_id, 'client_id': user_id}
-                if (delivery_id < 0):
-                    return None, 400
-                else:
-                    sql_code = sql_provider.get_sql('get_client_delivery.sql', params)
-            else:
-                params = {'id': delivery_id}
-                sql_code = sql_provider.get_sql('get_delivery.sql', params)
-                
+            sql_code = sql_provider.get_sql('get_client_delivery.sql', params)
+            print(sql_code)
             cursor.execute(sql_code)
             result = cursor.fetchone()
-
-            if (result is None):
-                response_status = 404
+            print(12312312312)
+            if (not result):
+                return None, NOT_FOUND
             else:
-                response_status = 200
+                return result, OK
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")
-
-    return result, response_status
 
 
 def count_deliveries(clients):
@@ -96,37 +77,39 @@ def all_deliveries_info(params):
 
             date_pattern = re.compile("^((0[1-9])|([1-2][0-9])|(3[0-1]))\-((0[1-9])|(1[0-2]))\-(20[0-2][0-9])")
 
-            if (params.get('send_date') and not date_pattern.match(params.get('send_date'))):
-                response_status = 400
+            if (params.get('send_date')):
+                if (date_pattern.match(params.get('send_date'))):
+                    params['send_date'] = convert_date(params.get('send_date'))
+                else:
+                    response_status = 400
+            else:
+                params['send_date'] = '%'
             
-            if (params.get('delivery_date') and not date_pattern.match(params.get('delivery_date'))):
-                response_status = 400
+            if (params.get('delivery_date')):
+                if (date_pattern.match(params.get('delivery_date'))):
+                    params['delivery_date'] = convert_date(params.get('delivery_date'))
+                else:
+                    response_status = 400
+            else:
+                params['delivery_date'] = '%'
+
+            if (params.get('status')):
+                if (params.get('status') not in ["Завершен", "В работе", "Отменен"]):
+                    response_status = 400
+            else:
+                params['status'] = '%'
 
             if (response_status != 400):
-                if (params.get('status')):
-                    if (params.get('status') not in [ "Завершен", "В работе", "Отменен" ]):
-                        response_status = 400
-                else:
-                    params['status'] = 'Завершен'
-
-            if (response_status != 400):
-                if (params.get('send_date') and params.get('delivery_date')):
-                    sql_code = sql_provider.get_sql('get_all_deliveries_info_with_send_delivery_date.sql', params)
-                elif (params.get('send_date') and not params.get('delivery_date')):
-                    sql_code = sql_provider.get_sql('get_all_deliveries_info_with_send_date.sql', params)
-                elif (not params.get('send_date') and params.get('delivery_date')):
-                    sql_code = sql_provider.get_sql('get_all_deliveries_info_with_delivery_date.sql', params)
-                else:
-                    sql_code = sql_provider.get_sql('get_all_deliveries_info.sql', params)
-
+                sql_code = sql_provider.get_sql('get_all_deliveries_info.sql', params)
                 cursor.execute(sql_code)
                 result = cursor.fetchall()
                 
                 if (not result):
                     response_status = 404
+                else:
+                    return result, response_status
             else:
-                result = None
-            return result, response_status
+                return None, response_status
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")
 

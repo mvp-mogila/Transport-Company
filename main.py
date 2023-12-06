@@ -1,6 +1,6 @@
 #! /bin/python3
 
-from http.client import BAD_REQUEST, NOT_FOUND, FORBIDDEN
+from http.client import BAD_REQUEST, NOT_FOUND, FORBIDDEN, NO_CONTENT
 from flask import Flask, render_template, session, request
 from werkzeug.exceptions import BadRequest, NotFound, Forbidden
 from os import urandom

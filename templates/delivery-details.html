@@ -1,0 +1,88 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<h2>Доставка №{{ delivery.id }}</h2>
+<ul class="delivery list-group list-group-flush">
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Номер документа клиента:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.client_id }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Клиент:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.client_surname }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Адрес отправки:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.send_address }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Адрес доставки:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.delivery_address }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Дата отправки:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.send_date }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Дата доставки:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.delivery_date }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Общий вес:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.total_weight }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Экспедитор:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.manager_surname }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Водитель:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.driver_surname }}</h3>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="delivery_row col-12">
+            <h3>Автомобиль:</h3>
+        </div>
+        <div class="col-12">
+            <h3>{{ delivery.transport_model }}</h3>
+        </div>
+    </li>
+</ul>
+
+{% endblock %}
