@@ -2,15 +2,10 @@
 
 {% block content %}
 
-{% if all %}
-    <h1>Доставки</h1>
-    {% include 'components/search.html' %}
-    {% if not user_deliveries %}
-        <h3 style="color: red;">По данному запросу доставок не найдено</h3>
-    {% endif %}
-{% else %}
-    <h1>Доставкa № {{ user_delivery.id }}</h1>
-    {% include 'componetns/delivery-details.html' %}
+<h1>Доставки</h1>
+{% include 'components/form-control.html' %}
+{% if not user_deliveries %}
+    <h3 style="color: red; margin-top: 20px;">По данному запросу доставок не найдено</h3>
 {% endif %}
 
 {% endblock %}
