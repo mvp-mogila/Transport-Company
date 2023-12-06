@@ -8,5 +8,4 @@ JOIN Client C ON Invoice.client_id = C.doc_num JOIN User CU ON C.user_id = CU.id
 JOIN Staff M ON Invoice.manager_id = M.id JOIN User MU ON M.user_id = MU.id
 JOIN Staff D ON Invoice.driver_id = D.id JOIN User DU ON D.user_id = DU.id
 JOIN Transport T ON Invoice.transport_id = T.id
-WHERE Invoice.id LIKE '$delivery_id'
-AND Invoice.delivery_status LIKE '$status';
+WHERE Invoice.id='$delivery_id';

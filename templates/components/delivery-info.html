@@ -1,3 +1,7 @@
+<div class="col-7">
+    {% include 'components/form-control.html' %}
+</div>
+
 <h3>Доставки</h3>
 <table class="table table-striped mt-3" style="background-color: azure;">
     <thead>
@@ -18,7 +22,11 @@
     <tbody>
         {% for delivery in deliveries %}
         <tr>
-            <th scope="row"><a href="{{ url_for('staff_app.delivery_process_handler', delivery_id=delivery.id) }}" style="color: black; text-decoration: none;">{{ delivery.id }}</a></th>
+            <th scope="row">
+                <a href="{{ url_for('staff_app.delivery_process_handler', delivery_id=delivery.id) }}" style="color: black; text-decoration: none;">
+                    {{ delivery.id }}
+                </a>
+            </th>
             <td>{{ delivery.client_id }}</td>
             <td>{{ delivery.send_date }}</td>
             <td>{{ delivery.delivery_date }}</td>

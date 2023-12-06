@@ -77,43 +77,53 @@ def count_deliveries(clients):
 def all_deliveries_info(params):
     with database as cursor:
         if cursor:
-            response_status = 200
-
-            date_pattern = re.compile("^((0[1-9])|([1-2][0-9])|(3[0-1]))\-((0[1-9])|(1[0-2]))\-(20[0-2][0-9])")
-
-            if (params.get('send_date')):
-                if (date_pattern.match(params.get('send_date'))):
-                    params['send_date'] = convert_date(params.get('send_date'))
-                else:
-                    response_status = 400
+            if (not params.get('delivery_id')):
+                params['delivery_id'] = '%'
             else:
-                params['send_date'] = '%'
-            
-            if (params.get('delivery_date')):
-                if (date_pattern.match(params.get('delivery_date'))):
-                    params['delivery_date'] = convert_date(params.get('delivery_date'))
-                else:
-                    response_status = 400
-            else:
-                params['delivery_date'] = '%'
+                try:
+                    int(params.get('delivery_id'))
+                except ValueError:
+                    return None, BAD_REQUEST
 
-            if (params.get('status')):
-                if (params.get('status') not in ["Завершен", "В работе", "Отменен"]):
-                    response_status = 400
-            else:
-                params['status'] = '%'
-
-            if (response_status != 400):
-                sql_code = sql_provider.get_sql('get_all_deliveries_info.sql', params)
+            if (params['delivery_id'] != '%'):
+                sql_code = sql_provider.get_sql('get_all_delivery_info.sql', params)
                 cursor.execute(sql_code)
                 result = cursor.fetchall()
-                
+
                 if (not result):
-                    response_status = 404
+                    return None, NOT_FOUND
                 else:
-                    return result, response_status
+                    return result, OK
+
+            date_pattern = re.compile("^(20[0-2][0-9])\-((0[1-9])|(1[0-2]))\-((0[1-9])|([1-2][0-9])|(3[0-1]))")
+
+            if (params.get('send_date') and not date_pattern.match(params.get('send_date'))):
+                return None, BAD_REQUEST
+                
+            if (params.get('delivery_date') and not date_pattern.match(params.get('delivery_date'))):
+                return None, BAD_REQUEST
+
+            if (not params.get('status')):
+                params['status'] = '%'
+            elif (params.get('status') not in ["Завершен", "В работе", "Отменен"]):
+                return None, BAD_REQUEST
+
+            if (params.get('send_date') and params.get('delivery_date')):
+                sql_code = sql_provider.get_sql('get_all_deliveries_info_with_send_delivery_dates.sql', params)
+            elif (params.get('send_date') and not params.get('delivery_date')):
+                sql_code = sql_provider.get_sql('get_all_deliveries_info_with_send_date.sql', params)
+            elif (not params.get('send_date') and params.get('delivery_date')):
+                sql_code = sql_provider.get_sql('get_all_deliveries_info_with_delivery_date.sql', params)
             else:
-                return None, response_status
+                sql_code = sql_provider.get_sql('get_all_deliveries_info.sql', params)
+
+            cursor.execute(sql_code)
+            result = cursor.fetchall()
+
+            if (not result):
+                return None, NOT_FOUND
+            else:
+                return result, OK
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")
 

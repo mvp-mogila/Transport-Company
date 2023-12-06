@@ -39,14 +39,10 @@
                         {% include 'components/transport-info.html' %}
                     {% endif %}
                     {% if deliveries %}
-                        {% include 'components/search.html' %}
                         {% include 'components/delivery-info.html' %}
                     {% endif %}
                     {% if user_deliveries %}
                         {% include 'components/user-deliveries.html' %}
-                    {% endif %}
-                    {% if not_found %}
-                        <h2 style="color:red">Результатов не найдено</h2>
                     {% endif %}
                 </div>
             </div>

@@ -9,4 +9,6 @@ JOIN Staff M ON Invoice.manager_id = M.id JOIN User MU ON M.user_id = MU.id
 JOIN Staff D ON Invoice.driver_id = D.id JOIN User DU ON D.user_id = DU.id
 JOIN Transport T ON Invoice.transport_id = T.id
 WHERE Invoice.id LIKE '$delivery_id'
+AND Invoice.send_date = STR_TO_DATE('$send_date', "%Y-%m-%d")
+AND Invoice.delivery_date = STR_TO_DATE('$delivery_date', "%Y-%m-%d")
 AND Invoice.delivery_status LIKE '$status';
