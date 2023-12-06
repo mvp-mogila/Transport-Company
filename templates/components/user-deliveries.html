@@ -12,7 +12,11 @@
     <tbody>
         {% for delivery in user_deliveries %}
             <tr>
-                <th scope="row"><a href="{{ delivery.id }}" style="color: black; text-decoration: none;">{{ delivery.id }}</a></th>
+                <th scope="row">
+                    <a href="{{ url_for('deliveries_app.delivery_handler', delivery_id=delivery.id) }}" style="color: black; text-decoration: none;">
+                        {{ delivery.id }}
+                    </a>
+                </th>
                 <td>{{ delivery.send_date }}</td>
                 <td>{{ delivery.delivery_date }}</td>
                 <td>{{ delivery.delivery_address }}</td>

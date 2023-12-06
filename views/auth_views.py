@@ -1,5 +1,4 @@
 from flask import Blueprint, redirect, request, render_template, session, url_for
-
 from managers import user_manager as user
 
 auth_app = Blueprint('auth_app', __name__, template_folder="templates")
@@ -19,10 +18,10 @@ def login_handler():
                 session['user_group'] = user_info['staff_group']
 
             session.modified = True
-            return redirect(url_for('default_handler'), 302)
+            return redirect(url_for('default_handler'))
         else:
             not_found = True
-    return render_template('login.html', user_not_found=not_found, staff_status=False, return_page_url='/')
+    return render_template('login.html', user_not_found=not_found, staff_status=False, return_url='/')
 
 
 @auth_app.route('/sign-up', methods = ['GET', 'POST'])
@@ -50,15 +49,14 @@ def signup_handler():
                           'address': address }
 
             user.create_new_client(user_info)
-            return redirect(url_for('default_handler'), 302)
+            return redirect(url_for('default_handler'))
         else:
             user_not_created = True
         
-        
-    return render_template('signup.html', user_not_created=user_not_created, staff_status=False, return_page_url='/')
+    return render_template('signup.html', user_not_created=user_not_created, staff_status=False, return_url='/')
 
 
 @auth_app.route('/logout')
 def logout_handler():
     session.clear()
-    return redirect(url_for('default_handler'), 302)
+    return redirect(url_for('default_handler'))

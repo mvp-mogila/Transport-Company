@@ -21,19 +21,19 @@ app.register_blueprint(staff_app, url_prefix='/staff')
 @app.errorhandler(BadRequest)
 def handle_bad_request(e):
     title = f'{e.code} Некорректный запрос'
-    return render_template('error.html', title=title, return_url=request.referrer), BAD_REQUEST
+    return render_template('error.html', title=title), BAD_REQUEST
 
 
 @app.errorhandler(NotFound)
 def handle_bad_request(e):
     title = f'{e.code} Не найдено'
-    return render_template('error.html', title=title, return_url=request.referrer), NOT_FOUND
+    return render_template('error.html', title=title), NOT_FOUND
 
 
 @app.errorhandler(Forbidden)
 def handle_forbidden(e):
     title = f'{e.code} Доступ запрещен'
-    return render_template('error.html', title=title, return_url=request.referrer), FORBIDDEN
+    return render_template('error.html', title=title), FORBIDDEN
 
 
 @app.route('/')
@@ -44,7 +44,7 @@ def default_handler():
         logged = True
         if ('user_group' in session):
             staff = True
-    return render_template('index.html', index=True, logged=logged, staff_status=staff)
+    return render_template('index.html', logged=logged, staff_status=staff)
 
 
 if (__name__ == '__main__'):

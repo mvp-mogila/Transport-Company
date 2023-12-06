@@ -7,22 +7,29 @@ from services.additional import convert_date
 def get_user_deliveries(params):
     with database as cursor:
         if cursor:
+            if (not params.get('delivery_id')):
+                params['delivery_id'] = '%'
+            else:
+                try:
+                    int(params.get('delivery_id'))
+                except ValueError:
+                    return None, BAD_REQUEST
+                
+
             if (not params.get('weight_lower')):
                 params['weight_lower'] = 0
             else:
                 try:
-                    int_weight = int(params.get('weight_lower'))
-                    (int_weight >= 0)
-                except ValueError or AssertionError:
+                    int(params.get('weight_lower'))
+                except ValueError:
                     return None, BAD_REQUEST
 
             if (not params.get('weight_upper')):
                 params['weight_upper'] = 1000000
             else:
                 try:
-                    int_weight = int(params.get('weight_upper'))
-                    (int_weight >= 0)
-                except ValueError or AssertionError:
+                    int(params.get('weight_upper'))
+                except ValueError:
                     return None, BAD_REQUEST
 
             if (not params.get('status')):
@@ -33,8 +40,6 @@ def get_user_deliveries(params):
             sql_code = sql_provider.get_sql('get_client_deliveries.sql', params)
             cursor.execute(sql_code)
             result = cursor.fetchall()
-            if (not result):
-                return None, NO_CONTENT
             return result, OK
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")
@@ -47,7 +52,6 @@ def get_user_delivery(params):
             print(sql_code)
             cursor.execute(sql_code)
             result = cursor.fetchone()
-            print(12312312312)
             if (not result):
                 return None, NOT_FOUND
             else:

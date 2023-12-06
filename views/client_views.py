@@ -23,6 +23,7 @@ def deliveries_handler():
     deliveries, response_code = delivery.get_user_deliveries( { 'user_id': user_id,
                                         'delivery_id': delivery_id, 'status': status,
                                         'weight_lower': weight_lower, 'weight_upper': weight_upper})
+
     if (response_code == BAD_REQUEST):
         raise BadRequest
 
@@ -33,8 +34,8 @@ def deliveries_handler():
                        {'name': "Вес (до)", 'params': None, 'arg': 'weight_upper', 'type': 'number'},
                        {'name': "Статус", 'params': ["Завершен", "В работе", "Отменен"], 'arg': 'status', 'type': None} ]
 
-    return render_template('deliveries.html', all=True, user_deliveries=deliveries, 
-            form_method=form_method, options=search_options, button_title=button_title, staff=False, logged=True), response_code
+    return render_template('deliveries.html', all=True, user_deliveries=deliveries, form_method=form_method,
+             options=search_options, button_title=button_title, staff=False, logged=True, return_url='/'), response_code
 
 
 @login_required
@@ -48,4 +49,4 @@ def delivery_handler(delivery_id):
     if (response_code == NOT_FOUND):
         raise NotFound
 
-    return render_template('delivery-details.html', delivery=delivery_details), response_code
+    return render_template('delivery-details.html', delivery=delivery_details, return_url='/delivery/'), response_code
