@@ -53,25 +53,7 @@
     </li>
 </ul>
 
-{% if options %}
-    <h2>Обработка</h2>
-    <form method="POST">
-        <div class="form-row">
-            {% for option in options %}
-                <div class="col">
-                    <label>{{ option.name }}</label>
-                    <select class="form-control form-control-md" name="{{ option.arg }}">
-                        <option value="">Указать</option>
-                        {% for param in option.params %}
-                            <option>{{ param }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-success mt-3">Создать</button>
-        </div>
-    </form>
-{% endif %}
+{% include 'components/form-control.html' %}
 
 {% if not_set %}
     <h2 style="color: red;">Параметры не заданы</h2>

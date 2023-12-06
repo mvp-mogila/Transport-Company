@@ -99,7 +99,7 @@ def delivery_process_handler(delivery_id):
     drivers = create_rows(drivers_list, 'id')
     transports = create_rows(transports_list, 'id')
     
-    delivery_info, response_code = delivery.get_delivery_info(delivery_id)
+    delivery_info, response_code = delivery.all_deliveries_info({'delivery_id': delivery_id})
 
     not_found = False
     if (response_code == BAD_REQUEST):
@@ -121,13 +121,15 @@ def delivery_process_handler(delivery_id):
         transport_id = request.form.get('transport')
         status = request.form.get('status')
 
-        params = {'id': delivery_id, 'manager': manager_id, 'driver': driver_id, 'transport': transport_id, 'status':status}
+        params = {'id': delivery_id, 'manager': manager_id, 'driver': driver_id, 'transport': transport_id, 'status': status}
 
         response_code = delivery.process_delivery(params)
-
-        if (response_code == NO_CONTENT):
+        
+        if (response_code == BAD_REQUEST):
+            raise BadRequest
+        elif (response_code == NO_CONTENT):
             not_set = True
 
-    return render_template('delivery-process.html', group=group, staff_status=True, delivery=delivery_info,
+    return render_template('delivery-process.html', group=group, staff_status=True, delivery=delivery_info[0],
                 form_method=form_method, button_title=button_title, options=options, 
                 return_url='/staff/info', logged=True, not_found=not_found, not_set=not_set)

@@ -1,5 +1,6 @@
-from http.client import BAD_REQUEST, NOT_FOUND, OK
+from http.client import BAD_REQUEST, NO_CONTENT, NOT_FOUND, OK
 import re
+from xmlrpc.client import SERVER_ERROR
 
 from settings import database, sql_provider
 
@@ -129,20 +130,22 @@ def all_deliveries_info(params):
 
 
 def process_delivery(params):
-     with database as cursor:
+    with database as cursor:
         if cursor:
-            response_status = 200
-            if (params.get('status') == 'Отменить'):
+            if (params.get('status') not in ["Завершить", "Взять в работу", "Отменить"]):
+                return BAD_REQUEST
+            elif (params.get('status') == "Отменить"):
                 sql_code = sql_provider.get_sql('cancel_delivery.sql', params)
+            elif (params.get('status') == "Завершить"):
+                sql_code = sql_provider.get_sql('finish_delivery.sql', params)
             elif (params.get('manager') and params.get('driver') and params.get('transport') and params.get('status')):
                 sql_code = sql_provider.get_sql('update_delivery.sql', params)
             else:
-                response_status = 204
-                return response_status
-            rows_count = cursor.execute(sql_code)
-                
-            if (not rows_count):
-                response_status = 500
-            return response_status
+                return NO_CONTENT
+            print(sql_code)
+            if (not cursor.execute(sql_code)):
+                return SERVER_ERROR
+            else:
+                return OK
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")
