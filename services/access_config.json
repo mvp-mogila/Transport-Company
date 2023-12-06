@@ -1,0 +1,16 @@
+{
+    "Администратор": [
+        "staff_app",
+        "report_app"
+    ],
+    "Экспедитор": [
+        "staff_app.default_info_handler",
+        "staff_app.transport_info_handler",
+        "staff_app.delivery_info_handler",
+        "staff_app.delivery_process_handler"
+    ],
+    "Водитель": [
+        "staff_app.default_info_handler",
+        "staff_app.transport_info_handler"
+    ]
+}

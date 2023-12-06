@@ -1,6 +1,7 @@
-from flask import session, redirect, url_for
+from flask import session, redirect, url_for, request
 from functools import wraps
-
+import json
+from werkzeug.exceptions import Forbidden
 
 def login_required(func):
     @wraps(func)
@@ -12,23 +13,24 @@ def login_required(func):
     return wrapper
 
 
-# def group_required(func):
-#     @wraps(func)
-#     def wrapper(*args, **kwargs):
-#         if ('user_login' in session):
-#             if ('user_group' in session):
-#                 user_group = session.get('user_group')
-#                 user_request = request.url.split('/')
-#                 url = user_request[3]
-#                 with open('access/access_config.json', 'r') as config:
-#                     config_list = json.load(config)
-#                     if user_group in config_list:
-#                         if url in config_list[user_group]:
-#                             return func(*args, **kwargs)
-#                         else:
-#                             return redirect('/', 403)
-#             else:
-#                 return redirect('/', 403)
-#         else:
-#             return redirect('/auth/login', 401)
-#     return wrapper
+def group_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if ('user_id' in session):
+            if ('user_group' in session):
+                user_group = session.get('user_group')
+                app = request.blueprint
+                function = request.endpoint
+                with open('services/access_config.json', 'r') as config_file:
+                    config = json.load(config_file)
+                    if (user_group in config and app in config[user_group]):
+                        return func(*args, **kwargs)
+                    elif (user_group in config and function in config[user_group]):
+                        return func(*args, **kwargs)
+                    else:
+                        raise Forbidden
+            else:
+                raise Forbidden
+        else:
+            return redirect(url_for('auth_app.login_handler'))
+    return wrapper
