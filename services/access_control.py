@@ -3,6 +3,7 @@ from functools import wraps
 import json
 from werkzeug.exceptions import Forbidden
 
+
 def login_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):

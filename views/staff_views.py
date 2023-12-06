@@ -8,12 +8,15 @@ import managers.staff_manager as staff
 import managers.client_manager as client
 import managers.transport_manager as transport
 import managers.delivery_manager as delivery
+from report_views import report_app
+
 
 staff_app = Blueprint('staff_app', __name__, template_folder='templates')
+staff_app.register_blueprint(report_app, url_prefix="/report")
 
 
-@staff_app.route('/info', methods=['GET'])
 @group_required
+@staff_app.route('/info', methods=['GET'])
 def default_info_handler():
     user_group = session.get('user_group')
     group = staff.parse_group(user_group)
