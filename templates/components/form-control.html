@@ -1,0 +1,20 @@
+<form method="{{ form_method }}">
+    <div class="form-row">
+        {% for option in options %}
+            <div class="col">
+                <label>{{ option.name }}</label>
+                {% if option.params %}
+                  <select class="form-control form-control-md" name="{{ option.arg }}">
+                    <option value="">Указать</option>
+                    {% for param in option.params %}
+                        <option>{{ param }}</option>
+                    {% endfor %}
+                  </select>
+                {% else %}
+                    <input type="{{ option.type }}" class="form-control" name="{{ option.arg }}">
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success mt-3">{{ button_title }}</button>
+    </div>
+</form>

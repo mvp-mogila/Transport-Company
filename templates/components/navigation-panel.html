@@ -11,10 +11,10 @@
 {% else %}
     <a href="{{ url_for('profile_app.profile_handler') }}" class="list-group-item">Профиль</a>
 {% endif %}
-{% if return_page_url %}
-    <a href="{{ return_page_url }}" class="list-group-item">Назад</a>
-{% else %}
+{% if index %}
     {% if logged %}
-    <a href="{{ url_for('auth_app.logout_handler') }}" class="list-group-item">Выйти</a>
+        <a href="{{ url_for('auth_app.logout_handler') }}" class="list-group-item">Выйти</a>
     {% endif %}
+{% else %}
+    <a href="javascript:history.back()" class="list-group-item">Назад</a>
 {% endif %}
