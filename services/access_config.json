@@ -1,7 +1,7 @@
 {
     "Администратор": [
         "staff_app",
-        "report_app"
+        "staff_app.report_app"
     ],
     "Экспедитор": [
         "staff_app.default_info_handler",
