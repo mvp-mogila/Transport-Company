@@ -4,7 +4,6 @@ from xmlrpc.client import SERVER_ERROR
 
 from settings import database, sql_provider
 
-
 def get_user_deliveries(params):
     with database as cursor:
         if cursor:
@@ -63,7 +62,7 @@ def get_user_delivery(params):
 
 def count_deliveries(clients):
     with database as cursor:
-        if (cursor):
+        if cursor:
             for client in clients:
                 params = {'client_id': client['doc_num']}
                 sql_code = sql_provider.get_sql('count_client_deliveries.sql',params)
@@ -147,5 +146,34 @@ def process_delivery(params):
                 return SERVER_ERROR
             else:
                 return OK
+        else:
+            raise ValueError("ERROR. CURSOR NOT CREATED!")
+        
+
+def report_info(params):
+    with database as cursor:
+        if cursor:
+
+            if (not params.get('cargo_name')):
+                params['cargo_name'] = '%'
+            elif (params.get('cargo_name') not in ["Малая коробка", "Средняя коробка", "Большая коробка", "Крупный груз", "Насыпной груз"]):
+                return None, BAD_REQUEST
+
+            date_pattern = re.compile("^(20[0-2][0-9])\-((0[1-9])|(1[0-2]))")
+
+            if (not params.get('date')):
+                params['year'] = '%'
+                params['month'] = '%'
+            elif (params.get('date') and not date_pattern.match(params.get('date'))):
+                return None, BAD_REQUEST
+            else:
+                date = params.get('date').split('-')
+                params['year'] = date[0]
+                params['month'] = date[1]
+            
+            sql_code = sql_provider.get_sql('get_report.sql', params)
+            cursor.execute(sql_code)
+            print(sql_code)
+            return cursor.fetchall(), OK
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")

@@ -3,7 +3,7 @@
     <a href="/delivery/new" class="list-group-item">Новая доставка</a>
 {% else %}
     <a href="{{ url_for('staff_app.default_info_handler') }}" class="list-group-item">Информация</a>
-    <a href="/staff/report" class="list-group-item">Отчетность</a>
+    <a href="{{ url_for('staff_app.report_app.report_check_handler') }}" class="list-group-item">Отчетность</a>
 {% endif %}
 {% if not logged %}
     <a href="{{ url_for('auth_app.login_handler') }}" class="list-group-item">Войти</a>

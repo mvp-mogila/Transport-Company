@@ -1,0 +1,40 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+<h1>Отчеты</h1>
+{% if create %}
+
+{% else %}
+    {% include 'components/form-control.html' %}
+
+    {% if reports %}
+        <table class="table table-striped mt-3" style="background-color: azure;">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Груз</th>
+                    <th scope="col">Год</th>
+                    <th scope="col">Месяц</th>
+                    <th scope="col">Количество перевозок</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                <tr>
+                    <th scope="row">{{ report.id }}</th>
+                    <td>{{ report.cargo_name }}</td>
+                    <td>{{ report.year }}</td>
+                    <td>{{ report.month }}</td>
+                    <td>{{ report.amount }}</td>
+                    <td>{{ delivery.delivery_address }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h3 style="color: red; margin-top: 20px;">По данному запросу отчетов не найдено</h3>
+    {% endif %}
+{% endif %}
+
+{% endblock %}
