@@ -1,5 +1,6 @@
 from flask import Blueprint, redirect, request, render_template, session, url_for
 from managers import user_manager as user
+from services.access_control import login_required
 
 auth_app = Blueprint('auth_app', __name__, template_folder="templates")
 
@@ -57,6 +58,7 @@ def signup_handler():
 
 
 @auth_app.route('/logout')
+@login_required
 def logout_handler():
     session.clear()
     return redirect(url_for('default_handler'))

@@ -8,23 +8,24 @@ import managers.staff_manager as staff
 import managers.client_manager as client
 import managers.transport_manager as transport
 import managers.delivery_manager as delivery
-from report_views import report_app
+from views.report_views import report_app
 
 
 staff_app = Blueprint('staff_app', __name__, template_folder='templates')
 staff_app.register_blueprint(report_app, url_prefix="/report")
 
 
-@group_required
 @staff_app.route('/info', methods=['GET'])
+@group_required
 def default_info_handler():
     user_group = session.get('user_group')
     group = staff.parse_group(user_group)
     return render_template('info.html', group=group, staff_status=True, return_url='/', logged=True)
 
 
-@group_required
+
 @staff_app.route('/info/clients', methods=['GET'])
+@group_required
 def client_info_handler():
     user_group = session.get('user_group')
     group = staff.parse_group(user_group)
@@ -36,8 +37,8 @@ def client_info_handler():
     return render_template('info.html', group=group, staff_status=True, clients=clients, logged=True, return_url='/')
 
 
-@group_required
 @staff_app.route('/info/staff', methods=['GET'])
+@group_required
 def staff_info_handler():
     user_group = session.get('user_group')
     group = staff.parse_group(user_group)
@@ -47,8 +48,8 @@ def staff_info_handler():
     return render_template('info.html', group=group, staff_status=True, staffs=staffs, return_url='/', logged=True)
 
 
-@group_required
 @staff_app.route('/info/transport', methods=['GET'])
+@group_required
 def transport_info_handler():
     user_group = session.get('user_group')
     group = staff.parse_group(user_group)
@@ -58,8 +59,8 @@ def transport_info_handler():
     return render_template('info.html', group=group, staff_status=True, transports=transports, return_url='/', logged=True)
 
 
-@group_required
 @staff_app.route('/info/deliveries', methods=['GET'])
+@group_required
 def delivery_info_handler():
     user_group = session.get('user_group')
     group = staff.parse_group(user_group)
@@ -89,8 +90,8 @@ def delivery_info_handler():
             deliveries_not_found=deliveries_not_found, options=search_options, button_title=button_title, logged=True, return_url='/')
 
 
-@group_required
 @staff_app.route('/delivery/process/<int:delivery_id>', methods=['GET', 'POST'])
+@group_required
 def delivery_process_handler(delivery_id):
     user_group = session.get('user_group')
     group = staff.parse_group(user_group)

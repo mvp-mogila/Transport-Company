@@ -38,8 +38,8 @@ def deliveries_handler():
              options=search_options, button_title=button_title, staff=False, logged=True, return_url='/'), response_code
 
 
-@login_required
 @deliveries_app.route('/<int:delivery_id>')
+@login_required
 def delivery_handler(delivery_id):
     user_id = session.get('user_id')
     params = {'user_id': user_id, 'delivery_id': delivery_id}

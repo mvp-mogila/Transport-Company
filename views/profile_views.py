@@ -8,8 +8,8 @@ import managers.client_manager as client
 profile_app = Blueprint('profile_app', __name__, template_folder="templates")
 
 
-@login_required
 @profile_app.route('/', methods = ['GET'])
+@login_required
 def profile_handler():
     user_id = session.get('user_id')
     user_info = user.user_info(user_id)
