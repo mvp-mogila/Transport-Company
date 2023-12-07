@@ -3,11 +3,12 @@
 {% block content %}
 
 <h1>Отчеты</h1>
-{% if create %}
-
-{% else %}
-    {% include 'components/form-control.html' %}
-
+{% include 'components/form-control.html' %}
+{% if errtitle %}
+    <h3 style="color: red; margin-top: 20px;">{{ errtitle }}</h3>
+{% endif %}
+{% if not create %}
+    <a class="btn btn-primary mt-3" href="{{ url_for('staff_app.report_app.report_create_handler') }}">Создать отчет</a>
     {% if reports %}
         <table class="table table-striped mt-3" style="background-color: azure;">
             <thead>
@@ -27,13 +28,10 @@
                     <td>{{ report.year }}</td>
                     <td>{{ report.month }}</td>
                     <td>{{ report.amount }}</td>
-                    <td>{{ delivery.delivery_address }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-    {% else %}
-        <h3 style="color: red; margin-top: 20px;">По данному запросу отчетов не найдено</h3>
     {% endif %}
 {% endif %}
 

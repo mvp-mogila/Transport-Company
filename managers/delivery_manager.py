@@ -148,32 +148,4 @@ def process_delivery(params):
                 return OK
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")
-        
 
-def report_info(params):
-    with database as cursor:
-        if cursor:
-
-            if (not params.get('cargo_name')):
-                params['cargo_name'] = '%'
-            elif (params.get('cargo_name') not in ["Малая коробка", "Средняя коробка", "Большая коробка", "Крупный груз", "Насыпной груз"]):
-                return None, BAD_REQUEST
-
-            date_pattern = re.compile("^(20[0-2][0-9])\-((0[1-9])|(1[0-2]))")
-
-            if (not params.get('date')):
-                params['year'] = '%'
-                params['month'] = '%'
-            elif (params.get('date') and not date_pattern.match(params.get('date'))):
-                return None, BAD_REQUEST
-            else:
-                date = params.get('date').split('-')
-                params['year'] = date[0]
-                params['month'] = date[1]
-            
-            sql_code = sql_provider.get_sql('get_report.sql', params)
-            cursor.execute(sql_code)
-            print(sql_code)
-            return cursor.fetchall(), OK
-        else:
-            raise ValueError("ERROR. CURSOR NOT CREATED!")
