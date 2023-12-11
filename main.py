@@ -5,14 +5,14 @@ from flask import Flask, render_template, session
 from werkzeug.exceptions import BadRequest, NotFound, Forbidden
 from os import urandom
 
-from views.client_views import deliveries_app
+from views.client_views import client_app
 from views.auth_views import auth_app
 from views.profile_views import profile_app
 from views.staff_views import staff_app
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
-app.register_blueprint(deliveries_app, url_prefix='/delivery')
+app.register_blueprint(client_app, url_prefix='/delivery')
 app.register_blueprint(auth_app, url_prefix='/auth')
 app.register_blueprint(profile_app, url_prefix='/profile')
 app.register_blueprint(staff_app, url_prefix='/staff')

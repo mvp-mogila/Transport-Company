@@ -1,3 +1,6 @@
+from datetime import date
+import datetime
+import time
 from http.client import BAD_REQUEST, NO_CONTENT, NOT_FOUND, OK
 import re
 from xmlrpc.client import SERVER_ERROR
@@ -149,3 +152,42 @@ def process_delivery(params):
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")
 
+
+def create_delivery(params):
+     with database as cursor:
+        if cursor:
+            
+            if (not params.get('send_address') or not params.get('delivery_address')):
+                print(1)
+                return None, BAD_REQUEST
+
+            date_pattern = re.compile("^(20[0-2][0-9])\-((0[1-9])|(1[0-2]))\-((0[1-9])|([1-2][0-9])|(3[0-1]))")
+
+            if (not params.get('send_date')):
+                return None, BAD_REQUEST
+            elif (not date_pattern.match(params.get('send_date'))):
+                return None, BAD_REQUEST
+                
+            if (not params.get('delivery_date')):
+                return None, BAD_REQUEST
+            elif (not date_pattern.match(params.get('delivery_date'))):
+                return None, BAD_REQUEST
+
+            if (time.strptime(params['send_date'], "%Y-%m-%d") > time.strptime(params['delivery_date'], "%Y-%m-%d")):
+                return None, BAD_REQUEST
+
+            params['creation_date'] = date.today().strftime("%Y-%m-%d")
+
+            sql_code = sql_provider.get_sql('get_full_client_info.sql', params)
+            cursor.execute(sql_code)
+            params['client_id'] = cursor.fetchone()['doc_num']
+
+            print(params)
+
+            sql_code = sql_provider.get_sql('create_delivery.sql', params)
+            if (cursor.execute(sql_code)):
+                return cursor.lastrowid, OK
+            else:
+                return None, SERVER_ERROR
+        else:
+            raise ValueError("ERROR. CURSOR NOT CREATED!")

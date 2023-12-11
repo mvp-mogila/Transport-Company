@@ -1,16 +1,15 @@
-from http.client import BAD_REQUEST, NOT_FOUND
-from flask import Blueprint, request, render_template, session
+from http.client import BAD_REQUEST, CREATED, NOT_FOUND
+from flask import Blueprint, request, render_template, session, redirect, url_for
 from werkzeug.exceptions import BadRequest, NotFound
 
 from services.access_control import login_required
 import managers.delivery_manager as delivery
-import managers.user_manager as user
 
 
-deliveries_app = Blueprint('deliveries_app', __name__, template_folder="templates")
+client_app = Blueprint('client_app', __name__, template_folder="templates")
 
 
-@deliveries_app.route('/', methods=["GET"])
+@client_app.route('/', methods=["GET"])
 @login_required
 def deliveries_handler():
     delivery_id = request.args.get('delivery_id')
@@ -40,7 +39,7 @@ def deliveries_handler():
              options=search_options, button_title=button_title, staff=False, logged=True, return_url='/'), response_code
 
 
-@deliveries_app.route('/<int:delivery_id>')
+@client_app.route('/<int:delivery_id>')
 @login_required
 def delivery_handler(delivery_id):
     user_id = session.get('user_id')
@@ -52,3 +51,28 @@ def delivery_handler(delivery_id):
         raise NotFound
 
     return render_template('delivery-details.html', delivery=delivery_details, return_url='/delivery/'), response_code
+
+
+@client_app.route('new', methods=['GET', 'POST'])
+@login_required
+def new_delivery_handler():
+    if (request.method == 'POST'):
+
+        user_id = session.get('user_id')
+        send_date = request.form.get('send_date')
+        delivery_date = request.form.get('delivery_date')
+        send_address = request.form.get('send_address')
+        delivery_address = request.form.get('delivery_address')
+
+        params = {'user_id': user_id, 'send_date': send_date, 'delivery_date': delivery_date,
+                  'send_address': send_address, 'delivery_address': delivery_address}
+
+        delivery_id, response_code = delivery.create_delivery(params)
+        
+
+        if (response_code ==  BAD_REQUEST):
+            raise BadRequest
+        elif (response_code == CREATED):
+            return redirect(url_for('client_app.delivery_items.app.default_handler', delivery_id=delivery_id))
+
+    return render_template('new-delivery.html', logged=True, return_url='/')
