@@ -7,7 +7,7 @@
                   <select class="form-control form-control-md" name="{{ option.arg }}">
                     <option value="">Указать</option>
                     {% for param in option.params %}
-                        <option>{{ param }}</option>
+                        <option value="{{ param.value }}">{{ param.name }}</option>
                     {% endfor %}
                   </select>
                 {% else %}

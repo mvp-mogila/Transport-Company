@@ -32,7 +32,9 @@ def deliveries_handler():
     search_options = [ {'name': "Номер заказа", 'params': None, 'arg': 'delivery_id', 'type': 'number'},
                        {'name': "Вес (от)", 'params': None, 'arg': 'weight_lower', 'type': 'number'},
                        {'name': "Вес (до)", 'params': None, 'arg': 'weight_upper', 'type': 'number'},
-                       {'name': "Статус", 'params': ["Завершен", "В работе", "Отменен"], 'arg': 'status', 'type': None} ]
+                       {'name': "Статус", 'params': [{"name": "Завершен", "value": "Завершен"},
+                                    {"name": "В работе", "value": "В работе"}, {"name": "Отменен", "value": "Отменен"}],
+                                    'arg': 'status', 'type': None} ]
 
     return render_template('deliveries.html', all=True, user_deliveries=deliveries, form_method=form_method,
              options=search_options, button_title=button_title, staff=False, logged=True, return_url='/'), response_code

@@ -84,7 +84,7 @@ def delivery_info_handler():
     search_options = [ {'name': "Номер доставки", 'params': None, 'arg': 'delivery_id', 'type': 'number'},
                 {'name': "Дата отправки", 'params': None, 'arg': 'send_date', 'type': 'date'},
                 {'name': "Дата доставки", 'params': None, 'arg': 'delivery_date', 'type': 'date'},
-                {'name': "Статус", 'params': ["Завершен", "В работе", "Отменен"], 'arg': 'status', 'type': None} ]
+                {'name': "Статус", 'params': [{"name": "Завершен"}, {"name": "В работе"}, {"name": "Отменен"}], 'arg': 'status', 'type': None} ]
     
     return render_template('info.html', group=group, staff_status=True, deliveries=deliveries,form_method=form_method,
             deliveries_not_found=deliveries_not_found, options=search_options, button_title=button_title, logged=True, return_url='/')
@@ -100,9 +100,9 @@ def delivery_process_handler(delivery_id):
     drivers_list = staff.get_drivers()
     transports_list = transport.get_ready_trasnport()
 
-    managers = create_rows(managers_list, 'id')
-    drivers = create_rows(drivers_list, 'id')
-    transports = create_rows(transports_list, 'id')
+    managers = create_rows(managers_list, 'surname', 'id')
+    drivers = create_rows(drivers_list, 'surname', 'id')
+    transports = create_rows(transports_list, 'model', 'id')
     
     delivery_info, response_code = delivery.all_deliveries_info({'delivery_id': delivery_id})
 
@@ -117,7 +117,9 @@ def delivery_process_handler(delivery_id):
     options = [ {'name': "Экспедитор", 'params': managers, 'arg': 'manager', 'type': None},
                 {'name': "Водитель", 'params': drivers, 'arg': 'driver', 'type': None},
                 {'name': "Автомобиль", 'params': transports, 'arg': 'transport', 'type': None},
-                {'name': "Статус", 'params': ['Взять в работу', 'Отменить', 'Завершить'], 'arg': 'status', 'type': None}]
+                {'name': "Статус", 'params': [
+                    {"name": "Взять в работу", "value": "Взять в работу"},
+                    {"name": "Отменить", "value": "Отменить"}, {"name": "Завершить", "value": "Завершить"}], 'arg': 'status', 'type': None}]
 
     not_set = False
     if (request.method == 'POST'):

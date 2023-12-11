@@ -27,7 +27,11 @@ def report_check_handler():
     
     form_method = "GET"
     button_title = "Поиск"
-    search_options = [ {'name': "Груз", 'params': ["Малая коробка", "Средняя коробка", "Большая коробка", "Крупный груз", "Насыпной груз"], 'arg': 'cargo_name', 'type': None},
+    search_options = [ {'name': "Груз", 'params': [{"name": "Малая коробка", "value": "Малая коробка"},
+                                                   {"name": "Средняя коробка", "value": "Средняя коробка"},
+                                                   {"name": "Большая коробка", "value": "Большая коробка"},
+                                                   {"name": "Крупный груз", "value": "Крупный груз"},
+                                                   {"name": "Насыпной груз", "value": "Насыпной груз"}],'arg': 'cargo_name', 'type': None},
                 {'name': "Промежуток создания отчета", 'params': None, 'arg': 'date', 'type': 'month'} ]
 
     return render_template('report.html', reports=reports, create=False, errtitle=errtitle,
@@ -41,7 +45,11 @@ def report_create_handler():
     errtitle = None
     form_method = "POST"
     button_title = "Создать"
-    search_options = [ {'name': "Груз", 'params': ["Малая коробка", "Средняя коробка", "Большая коробка", "Крупный груз", "Насыпной груз"], 'arg': 'cargo_name', 'type': None},
+    search_options = [ {'name': "Груз", 'params': [{"name": "Малая коробка", "value": "Малая коробка"},
+                                                   {"name": "Средняя коробка", "value": "Средняя коробка"},
+                                                   {"name": "Большая коробка", "value": "Большая коробка"},
+                                                   {"name": "Крупный груз", "value": "Крупный груз"},
+                                                   {"name": "Насыпной груз", "value": "Насыпной груз"}],'arg': 'cargo_name', 'type': None},
                 {'name': "Промежуток создания отчета", 'params': None, 'arg': 'date', 'type': 'month'} ]
     response_code = OK
     if (request.method == 'POST'):
