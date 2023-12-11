@@ -106,7 +106,6 @@ def delivery_process_handler(delivery_id):
     
     delivery_info, response_code = delivery.all_deliveries_info({'delivery_id': delivery_id})
 
-    not_found = False
     if (response_code == BAD_REQUEST):
         raise BadRequest
     if (response_code == NOT_FOUND):
@@ -141,4 +140,4 @@ def delivery_process_handler(delivery_id):
         
     return render_template('delivery-process.html', group=group, staff_status=True, delivery=delivery_info[0],
                 form_method=form_method, button_title=button_title, options=options, 
-                return_url='/staff/info', logged=True, not_found=not_found, not_set=not_set)
+                return_url='/staff/info', logged=True, not_set=not_set)

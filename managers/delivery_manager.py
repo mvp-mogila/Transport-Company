@@ -141,7 +141,7 @@ def process_delivery(params):
                 sql_code = sql_provider.get_sql('update_delivery.sql', params)
             else:
                 return NO_CONTENT
-            print(sql_code)
+
             if (not cursor.execute(sql_code)):
                 return SERVER_ERROR
             else:
