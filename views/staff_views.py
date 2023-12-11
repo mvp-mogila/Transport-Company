@@ -1,6 +1,6 @@
-from http.client import NO_CONTENT, NOT_FOUND, BAD_REQUEST
+from http.client import NO_CONTENT, NOT_FOUND, BAD_REQUEST, OK
 from werkzeug.exceptions import NotFound, BadRequest
-from flask import Blueprint, request, render_template, session
+from flask import Blueprint, redirect, request, render_template, session, url_for
 
 from services.additional import create_rows
 from services.access_control import group_required
@@ -136,7 +136,9 @@ def delivery_process_handler(delivery_id):
             raise BadRequest
         elif (response_code == NO_CONTENT):
             not_set = True
-
+        elif (response_code == OK):
+            return redirect(url_for('staff_app.delivery_info_handler'))
+        
     return render_template('delivery-process.html', group=group, staff_status=True, delivery=delivery_info[0],
                 form_method=form_method, button_title=button_title, options=options, 
                 return_url='/staff/info', logged=True, not_found=not_found, not_set=not_set)
