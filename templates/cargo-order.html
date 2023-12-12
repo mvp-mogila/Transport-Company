@@ -13,7 +13,7 @@
             <span class="fs-5">{{ item['name'] }} - {{ item['amount'] }}</span>
         </div>
         {% endfor %}
-        <a href="{{ url_for('client_app.new_delivery_handler') }}" class="btn btn-primary m-2">Оформить заказ</a>
+        <a href="{{ url_for('client_app.new_delivery_handler', total_weight=total_weight) }}" class="btn btn-primary m-2">Оформить заказ</a>
         <a href="{{ url_for('client_app.items_app.clear_order')}}" class="btn btn-warning m-2">Очистить</a>
     {% endif %}
 </div>

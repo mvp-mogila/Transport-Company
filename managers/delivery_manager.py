@@ -51,7 +51,7 @@ def get_user_delivery(params):
     with database as cursor:
         if cursor:
             sql_code = sql_provider.get_sql('get_client_delivery.sql', params)
-            print(sql_code)
+
             cursor.execute(sql_code)
             result = cursor.fetchone()
             if (not result):
@@ -153,7 +153,7 @@ def process_delivery(params):
 
 
 def create_delivery(params):
-     with database as cursor:
+    with database as cursor:
         if cursor:
             
             if (not params.get('send_address') or not params.get('delivery_address')):
@@ -171,7 +171,7 @@ def create_delivery(params):
             elif (not date_pattern.match(params.get('delivery_date'))):
                 return None, BAD_REQUEST
 
-            today = date.today()
+            today = time.localtime(time.time())
 
             if (time.strptime(params['send_date'], "%Y-%m-%d") < today):
                 return None, BAD_REQUEST
@@ -180,7 +180,7 @@ def create_delivery(params):
             elif (time.strptime(params['send_date'], "%Y-%m-%d") > time.strptime(params['delivery_date'], "%Y-%m-%d")):
                 return None, BAD_REQUEST
 
-            params['creation_date'] = today.strftime("%Y-%m-%d")
+            params['creation_date'] = time.strftime("%Y-%m-%d", today)
 
             sql_code = sql_provider.get_sql('get_full_client_info.sql', params)
             cursor.execute(sql_code)
@@ -191,5 +191,19 @@ def create_delivery(params):
                 return cursor.lastrowid, CREATED
             else:
                 return None, SERVER_ERROR
+        else:
+            raise ValueError("ERROR. CURSOR NOT CREATED!")
+        
+
+def create_detalization(delivery_id, items):
+    with database as cursor:
+        if cursor:
+            params = {'invoice_id': delivery_id}
+            for cargo in items.values():
+                params['cargo_id'] = cargo['id']
+                params['cargo_amount'] = cargo['amount']
+
+                sql_code = sql_provider.get_sql('create_detalization.sql', params)
+                cursor.execute(sql_code)
         else:
             raise ValueError("ERROR. CURSOR NOT CREATED!")

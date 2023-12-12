@@ -13,6 +13,7 @@ class DBContextManager:
     def __enter__(self):
         try:
             self.conn = connect(**self.config, cursorclass = DictCursor)
+            self.conn.begin
             self.cursor = self.conn.cursor()
             return self.cursor
         except OperationalError as err:

@@ -1,4 +1,4 @@
-from http.client import BAD_REQUEST, CONFLICT, CREATED, NOT_FOUND
+from http.client import BAD_REQUEST, NOT_FOUND
 from flask import Blueprint, request, render_template, session, redirect, url_for
 from werkzeug.exceptions import BadRequest, NotFound, Conflict
 
@@ -44,7 +44,7 @@ def deliveries_handler():
 def delivery_handler(delivery_id):
     user_id = session.get('user_id')
     params = {'user_id': user_id, 'delivery_id': delivery_id}
-    print(params)
+
     delivery_details, response_code = delivery.get_user_delivery(params)
 
     if (response_code == NOT_FOUND):
@@ -56,14 +56,12 @@ def delivery_handler(delivery_id):
 @client_app.route('new', methods=['GET', 'POST'])
 @login_required
 def new_delivery_handler():
-
-
-
     if (request.method == 'POST'):
 
         if (not session.get('items')):
             return redirect(url_for('client_app.items_app.default_order_handler'))
 
+        total_weight = request.args.get('total_weight')
         user_id = session.get('user_id')
         send_date = request.form.get('send_date')
         delivery_date = request.form.get('delivery_date')
@@ -71,19 +69,17 @@ def new_delivery_handler():
         delivery_address = request.form.get('delivery_address')
 
         params = {'user_id': user_id, 'send_date': send_date, 'delivery_date': delivery_date,
-                  'send_address': send_address, 'delivery_address': delivery_address}
+                  'send_address': send_address, 'delivery_address': delivery_address, 'total_weight': total_weight}
 
+        delivery_id, response_code = delivery.create_delivery(params)
+
+        if (response_code ==  BAD_REQUEST):
+            raise BadRequest
         
-        # delivery_id, response_code = delivery.create_delivery(params)
+        items = session.get('items')
+        delivery.create_detalization(delivery_id, items)
         
-        # if (response_code ==  BAD_REQUEST):
-        #     raise BadRequest
-        # elif (response_code == CREATED):
-            
-        #     session['delivery_id'] = delivery_id
-        #     session['items'] = {}
-        #     session.modified = True
-            
+        return redirect(url_for('client_app.delivery_handler', delivery_id=delivery_id))
 
     return render_template('new-delivery.html', logged=True, return_url='/')
 
