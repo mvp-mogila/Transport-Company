@@ -20,7 +20,6 @@ def get_cargo_info(cargo_id):
 def get_all_cargos():
     cargo_list = cache.get_value('cargo_list')
     if (cargo_list):
-        print(cargo_list)
         return cargo_list
     else:
         with database as cursor:
@@ -28,7 +27,6 @@ def get_all_cargos():
                 sql_code = sql_provider.get_sql('get_all_cargo_info.sql', dict())
                 cursor.execute(sql_code)
                 result = cursor.fetchall()
-                print(result)
                 return result
             else:
                 raise ValueError('ERROR. CURSOR NOT CREATED!')
