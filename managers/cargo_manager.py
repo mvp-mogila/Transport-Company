@@ -27,6 +27,7 @@ def get_all_cargos():
                 sql_code = sql_provider.get_sql('get_all_cargo_info.sql', dict())
                 cursor.execute(sql_code)
                 result = cursor.fetchall()
+                cache.set_value('cargo_list', result, 30)
                 return result
             else:
                 raise ValueError('ERROR. CURSOR NOT CREATED!')
