@@ -1,6 +1,6 @@
 {% if not staff_status %}
     <a href="{{ url_for('client_app.deliveries_handler') }}" class="list-group-item">Доставки</a>
-    <a href="{{ url_for('client_app.new_delivery_handler') }}" class="list-group-item">Новая доставка</a>
+    <a href="{{ url_for('client_app.items_app.default_order_handler') }}" class="list-group-item">Новая доставка</a>
 {% else %}
     <a href="{{ url_for('staff_app.default_info_handler') }}" class="list-group-item">Информация</a>
     <a href="{{ url_for('staff_app.report_app.report_check_handler') }}" class="list-group-item">Отчетность</a>

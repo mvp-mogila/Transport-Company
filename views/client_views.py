@@ -1,13 +1,13 @@
-from http.client import BAD_REQUEST, CREATED, NOT_FOUND
+from http.client import BAD_REQUEST, CONFLICT, CREATED, NOT_FOUND
 from flask import Blueprint, request, render_template, session, redirect, url_for
-from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.exceptions import BadRequest, NotFound, Conflict
 
 from services.access_control import login_required
 import managers.delivery_manager as delivery
-
+from views.item_views import items_app
 
 client_app = Blueprint('client_app', __name__, template_folder="templates")
-
+client_app.register_blueprint(items_app, url_prefix='/items')
 
 @client_app.route('/', methods=["GET"])
 @login_required
@@ -56,7 +56,13 @@ def delivery_handler(delivery_id):
 @client_app.route('new', methods=['GET', 'POST'])
 @login_required
 def new_delivery_handler():
+
+
+
     if (request.method == 'POST'):
+
+        if (not session.get('items')):
+            return redirect(url_for('client_app.items_app.default_order_handler'))
 
         user_id = session.get('user_id')
         send_date = request.form.get('send_date')
@@ -67,12 +73,18 @@ def new_delivery_handler():
         params = {'user_id': user_id, 'send_date': send_date, 'delivery_date': delivery_date,
                   'send_address': send_address, 'delivery_address': delivery_address}
 
-        delivery_id, response_code = delivery.create_delivery(params)
         
-
-        if (response_code ==  BAD_REQUEST):
-            raise BadRequest
-        elif (response_code == CREATED):
-            return redirect(url_for('client_app.delivery_items.app.default_handler', delivery_id=delivery_id))
+        # delivery_id, response_code = delivery.create_delivery(params)
+        
+        # if (response_code ==  BAD_REQUEST):
+        #     raise BadRequest
+        # elif (response_code == CREATED):
+            
+        #     session['delivery_id'] = delivery_id
+        #     session['items'] = {}
+        #     session.modified = True
+            
 
     return render_template('new-delivery.html', logged=True, return_url='/')
+
+

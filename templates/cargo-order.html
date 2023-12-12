@@ -1,0 +1,37 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+<h2>Составьте список грузов</h2>
+
+<div class="col-12 mt-2 border-bottom cargo-item">
+    <h4>Текущий заказ</h4>
+    <h5>Общий вес - {{ total_weight }} кг</h5>
+    {% if order_items %}
+        {% for item in order_items %}
+        <div class="col">
+            <span class="fs-6">{{ item['name'] }}</span>
+        </div>
+        <div class="col">
+            <span>{{ item['amount'] }}</span>
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% for cargo in cargos %}
+    <div class="col-6 mt-2 border-bottom cargo-item">
+        <div class="col">
+            <span class="fs-5">{{ cargo['name'] }}</span>
+        </div>
+        <div class="col">
+            <span>{{ cargo['weight'] }} кг</span>
+        </div>
+        <p>
+            <form action="" method="POST">
+            <input type="hidden" name="cargo_id" value="{{ cargo['id'] }}">
+            <input type="submit" name="send" value="Добавить" class="btn btn-success">
+            </form>
+        </p>
+    </div>
+{% endfor %}
+{% endblock %}

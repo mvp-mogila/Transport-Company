@@ -40,6 +40,7 @@ def handle_forbidden(e):
 def default_handler():
     logged = False
     staff = False
+    session['items'] = {}
     if ('user_id' in session):
         logged = True
         if ('user_group' in session):
