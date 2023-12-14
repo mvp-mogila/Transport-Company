@@ -36,7 +36,7 @@ def deliveries_handler():
                                     'arg': 'status', 'type': None} ]
 
     return render_template('deliveries.html', all=True, user_deliveries=deliveries, form_method=form_method,
-             options=search_options, button_title=button_title, staff=False, logged=True, return_url='/'), response_code
+             options=search_options, button_title=button_title, staff=False, logged=True, return_url='/')
 
 
 @client_app.route('/<int:delivery_id>')
@@ -50,16 +50,18 @@ def delivery_handler(delivery_id):
     if (response_code == NOT_FOUND):
         raise NotFound
 
-    return render_template('delivery-details.html', delivery=delivery_details, return_url='/delivery/'), response_code
+    return render_template('delivery-details.html', delivery=delivery_details, return_url='/delivery/',
+                    staff_status=False, logged=True)
 
 
 @client_app.route('new', methods=['GET', 'POST'])
 @login_required
 def new_delivery_handler():
-    if (request.method == 'POST'):
 
-        if (not session.get('items')):
+    if (not session.get('items')):
             return redirect(url_for('client_app.items_app.default_order_handler'))
+
+    if (request.method == 'POST'):
 
         total_weight = request.args.get('total_weight')
         user_id = session.get('user_id')
@@ -78,9 +80,11 @@ def new_delivery_handler():
         
         items = session.get('items')
         delivery.create_detalization(delivery_id, items)
+        session['items'] = {}
+        session.modified = True
         
         return redirect(url_for('client_app.delivery_handler', delivery_id=delivery_id))
 
-    return render_template('new-delivery.html', logged=True, return_url='/')
+    return render_template('new-delivery.html', logged=True, return_url='/', staff_status=False)
 
 

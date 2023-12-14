@@ -84,7 +84,9 @@ def delivery_info_handler():
     search_options = [ {'name': "Номер доставки", 'params': None, 'arg': 'delivery_id', 'type': 'number'},
                 {'name': "Дата отправки", 'params': None, 'arg': 'send_date', 'type': 'date'},
                 {'name': "Дата доставки", 'params': None, 'arg': 'delivery_date', 'type': 'date'},
-                {'name': "Статус", 'params': [{"name": "Завершен"}, {"name": "В работе"}, {"name": "Отменен"}], 'arg': 'status', 'type': None} ]
+                {'name': "Статус", 'params': [{"name": "Завершен", "value": "Завершен"},
+                                              {"name": "В работе", "value": "В работе"}, {"name": "Отменен", "value": "Отменен"}]
+                                              , 'arg': 'status', 'type': None} ]
     
     return render_template('info.html', group=group, staff_status=True, deliveries=deliveries,form_method=form_method,
             deliveries_not_found=deliveries_not_found, options=search_options, button_title=button_title, logged=True, return_url='/')

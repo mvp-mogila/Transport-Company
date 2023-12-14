@@ -64,7 +64,11 @@
             <h3>Экспедитор:</h3>
         </div>
         <div class="col-12">
-            <h3>{{ delivery.manager_surname }}</h3>
+            {% if not delivery.manager_surname %}
+                <h3 style="color:red">Не назначен</h3>
+            {% else %}
+                <h3>{{ delivery.manager_surname }}</h3>
+            {% endif %}
         </div>
     </li>
     <li class="list-group-item">
@@ -72,7 +76,11 @@
             <h3>Водитель:</h3>
         </div>
         <div class="col-12">
-            <h3>{{ delivery.driver_surname }}</h3>
+            {% if not delivery.driver_surname %}
+                <h3 style="color:red">Не назначен</h3>
+            {% else %}
+                <h3>{{ delivery.driver_surname }}</h3>
+            {% endif %}
         </div>
     </li>
     <li class="list-group-item">
@@ -80,7 +88,11 @@
             <h3>Автомобиль:</h3>
         </div>
         <div class="col-12">
-            <h3>{{ delivery.transport_model }}</h3>
+            {% if not delivery.transport_model %}
+                <h3 style="color:red">Не назначен</h3>
+            {% else %}
+                <h3>{{ delivery.transport_model }}</h3>
+            {% endif %}
         </div>
     </li>
 </ul>

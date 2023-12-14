@@ -36,9 +36,21 @@
                 <td>{{ delivery.send_address }}</td>
                 <td>{{ delivery.delivery_address }}</td>
                 <td>{{ delivery.total_weight }}</td>
-                <td {% if not delivery.manager_surname %} style="color:red" {% endif %}>{{ delivery.manager_surname }}</td>
-                <td {% if not delivery.driver_surname %} style="color:red" {% endif %}>{{ delivery.driver_surname }}</td>
-                <td {% if not delivery.transport_model %} style="color:red" {% endif %}>{{ delivery.transport_model }}</td>
+                {% if not delivery.manager_surname %}
+                    <td style="color:red">-</td>
+                {% else %}
+                    <td>{{ delivery.manager_surname }}</td>
+                {% endif %}
+                {% if not delivery.driver_surname %}
+                    <td style="color:red">-</td>
+                {% else %}
+                    <td>{{ delivery.driver_surname }}</td>
+                {% endif %}
+                {% if not delivery.transport_model %}
+                    <td style="color:red">-</td>
+                {% else %}
+                    <td>{{ delivery.transport_model }}</td>
+                {% endif %}
                 <td>{{ delivery.delivery_status }}</td>
             </tr>
             {% endfor %}

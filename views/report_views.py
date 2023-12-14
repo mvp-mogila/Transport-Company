@@ -64,7 +64,7 @@ def report_create_handler():
         elif (response_code == CONFLICT):
             errtitle = "Такой отчет уже существует"
         elif (response_code == NO_CONTENT):
-            errtitle = "Этот продукт не продавался в указанный период"
+            errtitle = "Этот груз не перевозили в указанный период"
         elif (response_code ==  UNPROCESSABLE_ENTITY):
             errtitle = "Указаны не все парметры"
         elif (response_code == CREATED):
