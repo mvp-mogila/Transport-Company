@@ -28,4 +28,4 @@ CLOSE C1;
 
 END
 
-DROP PROCEDURE create_report ;
+DROP PROCEDURE create_report;

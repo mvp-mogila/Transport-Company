@@ -5,23 +5,24 @@ from services.access_control import login_required
 auth_app = Blueprint('auth_app', __name__, template_folder="templates")
 
 
-@auth_app.route('/login', methods = ['GET'])
+@auth_app.route('/login', methods = ['GET', 'POST'])
 def login_handler():
     not_found = False
-    login = request.args.get('login')
-    password = request.args.get('pass')
+    if request.method == 'POST':
+        login = request.form.get('login')
+        password = request.form.get('pass')
 
-    if (login and password):
-        user_info = user.validate_user(login, password)
-        if (user_info):
-            session['user_id'] = user_info['id']
-            if (user_info['staff_status']):
-                session['user_group'] = user_info['staff_group']
+        if (login and password):
+            user_info = user.validate_user(login, password)
+            if (user_info):
+                session['user_id'] = user_info['id']
+                if (user_info['staff_status']):
+                    session['user_group'] = user_info['staff_group']
 
-            session.modified = True
-            return redirect(url_for('default_handler'))
-        else:
-            not_found = True
+                session.modified = True
+                return redirect(url_for('default_handler'))
+            else:
+                not_found = True
     return render_template('login.html', user_not_found=not_found, staff_status=False, return_url='/')
 
 
